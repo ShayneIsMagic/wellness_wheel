@@ -1,6 +1,6 @@
 # Harbor Compass
 
-A single-page wellness reflection tool based on the **Stanford WELL for Life** ten domains. Users work through a visual wheel, dimension wizards, vision statements, focused actions, and a simple budget view. All progress is saved in the browser (localStorage); nothing is sent to a server unless you add analytics later.
+A single-page wellness reflection tool based on the **Stanford WELL for Life** ten domains. Listed on the [Attitude Cycle tools hub](https://shayneismagic.github.io/ZBTools/) for [attitudecycle.com](https://attitudecycle.com). Users work through a visual wheel, dimension wizards, vision statements, focused actions, and a simple budget view. All progress is saved in the browser (localStorage); nothing is sent to a server unless you add analytics later.
 
 ## Running locally
 
