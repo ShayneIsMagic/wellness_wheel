@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Purpose Driven Exercise — Five Stages of Change</title>
+<meta name="description" content="A guided framework for living with purpose. Work through Why, What, How, When, and Who — five stages of meaningful change.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink:        #1a1714;
+  --ink-soft:   #4a4540;
+  --ink-mute:   #8a8078;
+  --gold:       #b8965a;
+  --gold-light: #d4b07a;
+  --gold-pale:  #f0e4cc;
+  --cream:      #faf7f2;
+  --cream-dark: #f0ebe2;
+  --white:      #ffffff;
+
+  /* Stage colors */
+  --s1: #4a3d6b;   /* Why    — purple  */
+  --s2: #2d6b5e;   /* What   — teal    */
+  --s3: #7a5a18;   /* How    — amber   */
+  --s4: #7a3028;   /* When   — coral   */
+  --s5: #1e4468;   /* Who    — blue    */
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ─── SKIP LINK ─── */
+.skip-link {
+  position: absolute; top: -100px; left: 1rem; z-index: 999;
+  background: var(--gold); color: var(--ink);
+  padding: 0.5rem 1rem; font-size: 0.75rem; font-weight: 500;
+  transition: top 0.2s;
+}
+.skip-link:focus { top: 1rem; }
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: rgba(250,247,242,0.94);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--gold-pale);
+  height: 54px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem;
+}
+.nav-left {
+  display: flex; align-items: center; gap: 1rem;
+}
+.nav-back {
+  font-size: 0.6rem; font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ink-mute); text-decoration: none;
+  transition: color 0.2s;
+  display: flex; align-items: center; gap: 0.4rem;
+}
+.nav-back:hover { color: var(--gold); }
+.nav-back::before { content: '←'; font-family: serif; }
+.nav-divider {
+  width: 1px; height: 14px; background: var(--gold-pale);
+}
+.nav-brand {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem; font-weight: 400;
+  letter-spacing: 0.1em; color: var(--ink-soft);
+}
+.nav-pills {
+  display: flex; gap: 2px; align-items: center;
+}
+.nav-pill {
+  padding: 0.3rem 0.75rem;
+  font-size: 0.6rem; font-weight: 500;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink-mute); cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.25s; border: none; background: transparent;
+}
+.nav-pill:hover { color: var(--gold); }
+.nav-pill.active { color: white; }
+.nav-pill[data-stage="1"].active { background: var(--s1); }
+.nav-pill[data-stage="2"].active { background: var(--s2); }
+.nav-pill[data-stage="3"].active { background: var(--s3); }
+.nav-pill[data-stage="4"].active { background: var(--s4); }
+.nav-pill[data-stage="5"].active { background: var(--s5); }
+.nav-pill[data-stage="0"].active { background: var(--ink); }
+.nav-pill[data-stage="6"].active { background: var(--gold); color: var(--ink); }
+
+/* ─── SECTIONS ─── */
+section {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 80px 2rem 60px;
+  position: relative;
+}
+.container { max-width: 880px; margin: 0 auto; width: 100%; }
+
+/* ─── HERO ─── */
+#hero {
+  background: var(--ink);
+  color: var(--cream);
+  overflow: hidden;
+  text-align: center;
+}
+#hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 38%, rgba(184,150,90,0.10) 0%, transparent 70%),
+    radial-gradient(ellipse 35% 40% at 15% 75%, rgba(74,61,107,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 35% 35% at 85% 20%, rgba(45,107,94,0.13) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-size: 0.65rem; font-weight: 500;
+  letter-spacing: 0.4em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 1.75rem;
+  opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+}
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 300; line-height: 1.02;
+  color: var(--cream); margin-bottom: 1.25rem;
+  opacity: 0; animation: fadeUp 0.9s 0.35s forwards;
+}
+.hero-title em { font-style: italic; color: var(--gold-light); }
+.hero-sub {
+  font-size: 0.82rem; font-weight: 300;
+  letter-spacing: 0.12em; color: rgba(250,247,242,0.45);
+  margin-bottom: 3rem;
+  opacity: 0; animation: fadeUp 0.9s 0.5s forwards;
+}
+.hero-quote-wrap {
+  max-width: 560px; margin: 0 auto 3rem;
+  opacity: 0; animation: fadeUp 0.9s 0.65s forwards;
+}
+.hero-quote-wrap blockquote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  font-style: italic; color: rgba(250,247,242,0.72);
+  line-height: 1.65;
+}
+.hero-quote-wrap cite {
+  display: block; font-style: normal;
+  font-size: 0.62rem; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--gold);
+  margin-top: 0.65rem; font-weight: 500;
+}
+
+/* Five column spine on hero */
+.hero-spine {
+  display: flex; gap: 1px; justify-content: center; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp 0.9s 0.8s forwards;
+}
+.spine-item {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 1rem 1.25rem;
+  border: 1px solid rgba(255,255,255,0.07);
+  cursor: pointer; transition: all 0.3s; min-width: 110px;
+}
+.spine-item:hover { border-color: var(--gold); background: rgba(184,150,90,0.07); }
+.spine-qword {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem; font-weight: 300;
+  line-height: 1; margin-bottom: 0.3rem;
+}
+.spine-item:nth-child(1) .spine-qword { color: #9d8fc4; }
+.spine-item:nth-child(2) .spine-qword { color: #5db8a0; }
+.spine-item:nth-child(3) .spine-qword { color: #c4902a; }
+.spine-item:nth-child(4) .spine-qword { color: #c46058; }
+.spine-item:nth-child(5) .spine-qword { color: #5a8fc4; }
+.spine-label {
+  font-size: 0.58rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: rgba(250,247,242,0.4);
+  font-weight: 500;
+}
+
+/* ─── FRAMEWORK MAP ─── */
+#map { background: var(--cream-dark); }
+#map::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--s1), var(--s2), var(--s3), var(--s4), var(--s5));
+}
+.map-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px; background: var(--gold-pale);
+  margin: 2rem 0;
+}
+.map-col {
+  background: var(--white);
+  padding: 1.5rem 1.2rem;
+  display: flex; flex-direction: column; gap: 0.5rem;
+}
+.map-col-q {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem; font-weight: 300;
+  line-height: 1; color: var(--gold-pale);
+}
+.map-col-stage {
+  font-size: 0.58rem; font-weight: 600;
+  letter-spacing: 0.25em; text-transform: uppercase;
+}
+.map-col-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.25rem; font-weight: 400; line-height: 1.1;
+}
+.map-col-tags {
+  display: flex; flex-wrap: wrap; gap: 4px; margin-top: 0.25rem;
+}
+.map-tag {
+  font-size: 0.58rem; font-weight: 500;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 0.2rem 0.5rem; border-radius: 2px;
+  color: white;
+}
+.map-col-q-text {
+  font-size: 0.78rem; color: var(--ink-mute);
+  line-height: 1.5; margin-top: 0.25rem;
+  font-style: italic;
+}
+
+/* color overrides per col */
+.map-col:nth-child(1) .map-col-stage { color: var(--s1); }
+.map-col:nth-child(2) .map-col-stage { color: var(--s2); }
+.map-col:nth-child(3) .map-col-stage { color: var(--s3); }
+.map-col:nth-child(4) .map-col-stage { color: var(--s4); }
+.map-col:nth-child(5) .map-col-stage { color: var(--s5); }
+.map-col:nth-child(1) .map-tag { background: var(--s1); }
+.map-col:nth-child(2) .map-tag { background: var(--s2); }
+.map-col:nth-child(3) .map-tag { background: var(--s3); }
+.map-col:nth-child(4) .map-tag { background: var(--s4); }
+.map-col:nth-child(5) .map-tag { background: var(--s5); }
+.map-col:nth-child(1) .map-col-title { color: var(--s1); }
+.map-col:nth-child(2) .map-col-title { color: var(--s2); }
+.map-col:nth-child(3) .map-col-title { color: var(--s3); }
+.map-col:nth-child(4) .map-col-title { color: var(--s4); }
+.map-col:nth-child(5) .map-col-title { color: var(--s5); }
+
+/* ─── STAGE SECTIONS ─── */
+.stage-sec { position: relative; }
+.stage-sec::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 4px;
+}
+#s1::before { background: linear-gradient(90deg, var(--s1), #7a6aab, var(--s1)); }
+#s2::before { background: linear-gradient(90deg, var(--s2), #4dae9a, var(--s2)); }
+#s3::before { background: linear-gradient(90deg, var(--s3), #c49840, var(--s3)); }
+#s4::before { background: linear-gradient(90deg, var(--s4), #b85848, var(--s4)); }
+#s5::before { background: linear-gradient(90deg, var(--s5), #4a80c0, var(--s5)); }
+
+#s1 { background: #f7f5fc; }
+#s2 { background: #f2f9f7; }
+#s3 { background: #fdf8ee; }
+#s4 { background: #fcf2f1; }
+#s5 { background: #f1f6fc; }
+
+/* watermark Q word */
+.stage-watermark {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(8rem, 22vw, 18rem);
+  font-weight: 300; font-style: italic;
+  line-height: 1; opacity: 0.04;
+  position: absolute; top: 40px; right: -1rem;
+  pointer-events: none; color: var(--ink);
+  user-select: none;
+}
+
+.stage-header { margin-bottom: 0.5rem; }
+.stage-q-word {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3.5rem, 9vw, 7rem);
+  font-weight: 300; line-height: 0.95;
+  margin-bottom: 0.2rem;
+}
+#s1 .stage-q-word { color: var(--s1); }
+#s2 .stage-q-word { color: var(--s2); }
+#s3 .stage-q-word { color: var(--s3); }
+#s4 .stage-q-word { color: var(--s4); }
+#s5 .stage-q-word { color: var(--s5); }
+
+.stage-name-row {
+  display: flex; align-items: baseline; gap: 1rem;
+  flex-wrap: wrap; margin-bottom: 0.3rem;
+}
+.stage-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.4rem, 3.5vw, 2.4rem);
+  font-weight: 400; color: var(--ink);
+}
+.stage-sub {
+  font-size: 0.68rem; font-weight: 500;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.stage-tags {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.5rem;
+}
+.stag {
+  font-size: 0.6rem; font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 0.22rem 0.65rem; color: white; border-radius: 2px;
+}
+#s1 .stag { background: var(--s1); }
+#s2 .stag { background: var(--s2); }
+#s3 .stag { background: var(--s3); }
+#s4 .stag { background: var(--s4); }
+#s5 .stag { background: var(--s5); }
+
+.stag.outline {
+  background: transparent !important;
+  border: 1px solid;
+  color: var(--ink-soft) !important;
+}
+#s1 .stag.outline { border-color: var(--s1); color: var(--s1) !important; }
+#s2 .stag.outline { border-color: var(--s2); color: var(--s2) !important; }
+#s3 .stag.outline { border-color: var(--s3); color: var(--s3) !important; }
+#s4 .stag.outline { border-color: var(--s4); color: var(--s4) !important; }
+#s5 .stag.outline { border-color: var(--s5); color: var(--s5) !important; }
+
+.stage-body {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+  align-items: start;
+}
+
+/* Questions panel */
+.q-panel {
+  display: flex; flex-direction: column; gap: 1px;
+}
+.q-panel-label {
+  font-size: 0.58rem; font-weight: 600;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--ink-mute); padding: 0 0 0.5rem;
+}
+.q-item {
+  background: white;
+  padding: 1rem 1.2rem;
+  display: flex; gap: 0.75rem; align-items: flex-start;
+  transition: transform 0.2s;
+}
+.q-item:hover { transform: translateX(3px); }
+.q-bullet {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem; line-height: 1.5; flex-shrink: 0;
+}
+#s1 .q-bullet { color: var(--s1); }
+#s2 .q-bullet { color: var(--s2); }
+#s3 .q-bullet { color: var(--s3); }
+#s4 .q-bullet { color: var(--s4); }
+#s5 .q-bullet { color: var(--s5); }
+.q-text { font-size: 0.85rem; color: var(--ink-soft); line-height: 1.6; }
+.q-text strong {
+  display: block; font-size: 0.72rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  font-weight: 500; margin-bottom: 0.15rem;
+}
+#s1 .q-text strong { color: var(--s1); }
+#s2 .q-text strong { color: var(--s2); }
+#s3 .q-text strong { color: var(--s3); }
+#s4 .q-text strong { color: var(--s4); }
+#s5 .q-text strong { color: var(--s5); }
+
+/* Quotes panel */
+.qt-panel { display: flex; flex-direction: column; gap: 1px; }
+.qt-panel-label {
+  font-size: 0.58rem; font-weight: 600;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--ink-mute); padding: 0 0 0.5rem;
+}
+.qt-card {
+  background: white; padding: 1.2rem 1.4rem;
+  position: relative; overflow: hidden;
+  transition: transform 0.2s;
+}
+.qt-card:hover { transform: translateX(-3px); }
+.qt-card.lead { border-left: 3px solid; }
+#s1 .qt-card.lead { border-color: var(--s1); }
+#s2 .qt-card.lead { border-color: var(--s2); }
+#s3 .qt-card.lead { border-color: var(--s3); }
+#s4 .qt-card.lead { border-color: var(--s4); }
+#s5 .qt-card.lead { border-color: var(--s5); }
+.qt-card blockquote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem; font-style: italic;
+  color: var(--ink-soft); line-height: 1.6;
+}
+.qt-card cite {
+  display: block; font-style: normal;
+  font-size: 0.6rem; letter-spacing: 0.2em;
+  text-transform: uppercase; margin-top: 0.5rem; font-weight: 500;
+}
+#s1 .qt-card cite { color: var(--s1); }
+#s2 .qt-card cite { color: var(--s2); }
+#s3 .qt-card cite { color: var(--s3); }
+#s4 .qt-card cite { color: var(--s4); }
+#s5 .qt-card cite { color: var(--s5); }
+
+/* Attitude callout */
+.att-bar {
+  margin-top: 2rem;
+  padding: 1rem 1.5rem;
+  background: rgba(26,23,20,0.04);
+  border-top: 2px solid var(--gold);
+  display: flex; gap: 1.25rem; align-items: flex-start;
+}
+.att-word {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem; font-style: italic;
+  color: var(--gold); flex-shrink: 0; padding-top: 0.05rem;
+  min-width: 90px;
+}
+.att-desc { font-size: 0.83rem; color: var(--ink-soft); line-height: 1.65; }
+.att-desc strong { font-weight: 500; color: var(--ink); }
+
+/* ─── ATTITUDE SECTION (within tool) ─── */
+#attitude { background: var(--ink); color: var(--cream); }
+.att-section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 300; line-height: 1.05; color: var(--cream);
+  margin-bottom: 0.4rem;
+}
+.att-section-title em { font-style: italic; color: var(--gold-light); }
+.frankl-hero {
+  border: 1px solid rgba(184,150,90,0.25);
+  padding: 2rem 2.5rem; text-align: center;
+  position: relative; margin: 2rem 0;
+}
+.frankl-hero::before {
+  content: 'Viktor Frankl  ·  Man\'s Search for Meaning';
+  position: absolute; top: -0.6rem; left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  padding: 0 0.75rem;
+  font-size: 0.58rem; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--gold);
+  white-space: nowrap; font-weight: 500;
+}
+.frankl-hero blockquote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.1rem, 2.8vw, 1.6rem);
+  font-style: italic; color: rgba(250,247,242,0.85);
+  line-height: 1.5;
+}
+
+.laws-row {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: rgba(255,255,255,0.06); margin-bottom: 1px;
+}
+.outcomes-row {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  gap: 1px; background: rgba(255,255,255,0.06); margin-bottom: 2rem;
+}
+.law-card, .outcome-card {
+  background: rgba(255,255,255,0.03);
+  padding: 1.5rem;
+  transition: background 0.3s;
+}
+.law-card:hover, .outcome-card:hover { background: rgba(255,255,255,0.06); }
+.law-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem; font-weight: 300;
+  color: var(--gold); line-height: 1; margin-bottom: 0.4rem;
+}
+.law-title, .outcome-stage {
+  font-size: 0.62rem; font-weight: 600;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.law-title { color: var(--gold-light); }
+.outcome-stage { color: var(--gold); }
+.law-body, .outcome-body {
+  font-size: 0.82rem; line-height: 1.6;
+  color: rgba(250,247,242,0.55);
+}
+.outcome-att {
+  font-size: 0.72rem; font-weight: 500;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: rgba(250,247,242,0.3); margin-bottom: 0.4rem;
+}
+.law-qt {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-size: 0.9rem;
+  color: rgba(250,247,242,0.4); margin-top: 0.75rem; line-height: 1.5;
+}
+
+/* ─── CLOSING ─── */
+#closing { background: var(--cream-dark); text-align: center; }
+.closing-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 300; color: var(--ink); margin-bottom: 2.5rem;
+}
+.closing-title em { font-style: italic; color: var(--gold); }
+.closing-quotes {
+  display: flex; flex-direction: column; gap: 2rem;
+  max-width: 640px; margin: 0 auto 3rem;
+}
+.closing-qt {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  font-style: italic; color: var(--ink-soft);
+  line-height: 1.55;
+}
+.closing-qt cite {
+  display: block; font-style: normal;
+  font-size: 0.62rem; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold);
+  margin-top: 0.6rem; font-weight: 500;
+}
+.final-question {
+  display: inline-block;
+  padding: 1.25rem 2.5rem;
+  border: 1px solid var(--gold);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.2rem, 3vw, 1.7rem);
+  font-style: italic; color: var(--ink);
+  letter-spacing: 0.03em;
+}
+
+/* ─── UTILITIES ─── */
+.eyebrow {
+  font-size: 0.62rem; font-weight: 600;
+  letter-spacing: 0.35em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.75rem;
+}
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 300; line-height: 1.1; margin-bottom: 1rem;
+}
+.section-title em { font-style: italic; }
+.section-lead {
+  font-size: 0.95rem; color: var(--ink-soft);
+  line-height: 1.8; max-width: 620px; margin-bottom: 2rem;
+}
+
+/* ─── REVEAL ─── */
+.reveal {
+  opacity: 0; transform: translateY(22px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.rd1 { transition-delay: 0.1s; }
+.rd2 { transition-delay: 0.2s; }
+.rd3 { transition-delay: 0.3s; }
+.rd4 { transition-delay: 0.4s; }
+.rd5 { transition-delay: 0.5s; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 680px) {
+  .stage-body { grid-template-columns: 1fr; }
+  .laws-row { grid-template-columns: 1fr; }
+  .outcomes-row { grid-template-columns: repeat(2, 1fr); }
+  .map-grid { grid-template-columns: 1fr; }
+  nav { padding: 0 1rem; }
+  .nav-pills { display: none; }
+}
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<!-- NAV -->
+<nav aria-label="Tool navigation">
+  <div class="nav-left">
+    <a href="../../index.html" class="nav-back" aria-label="Back to Attitude Cycle home">Attitude Cycle</a>
+    <div class="nav-divider" aria-hidden="true"></div>
+    <span class="nav-brand">Purpose Driven Exercise</span>
+    <a href="../harbor-compass/" class="nav-back" style="margin-left:0.35rem" aria-label="Open Harbor Compass">Harbor Compass →</a>
+  </div>
+  <div class="nav-pills" id="navPills" role="list" aria-label="Jump to section">
+    <button class="nav-pill" data-stage="0" aria-label="Go to home section">Home</button>
+    <button class="nav-pill" data-stage="0" aria-label="Go to framework map">Map</button>
+    <button class="nav-pill" data-stage="1" aria-label="Go to Stage 1: Why">Why</button>
+    <button class="nav-pill" data-stage="2" aria-label="Go to Stage 2: What">What</button>
+    <button class="nav-pill" data-stage="3" aria-label="Go to Stage 3: How">How</button>
+    <button class="nav-pill" data-stage="4" aria-label="Go to Stage 4: When">When</button>
+    <button class="nav-pill" data-stage="5" aria-label="Go to Stage 5: Who">Who</button>
+    <button class="nav-pill" data-stage="0" aria-label="Go to Attitude section">Attitude</button>
+    <button class="nav-pill" data-stage="6" aria-label="Go to closing">Close</button>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- ══════════ HERO ══════════ -->
+<section id="hero" aria-labelledby="hero-heading">
+  <div class="container" style="position:relative;z-index:1;">
+    <p class="hero-eyebrow">A Framework for Living with Purpose</p>
+    <h1 class="hero-title" id="hero-heading">Five Stages<br><em>of Change</em></h1>
+    <p class="hero-sub">Why · What · How · When · Who</p>
+    <div class="hero-quote-wrap">
+      <blockquote>"Between stimulus and response there is a space. In that space is our power to choose our response. In our response lies our growth and our freedom."</blockquote>
+      <cite>Viktor Frankl — Man's Search for Meaning</cite>
+    </div>
+    <div class="hero-spine" role="list" aria-label="Jump to a stage">
+      <div class="spine-item" role="listitem" data-goto="#s1" tabindex="0" aria-label="Go to Stage 1: Why">
+        <span class="spine-qword">Why</span>
+        <span class="spine-label">Purpose · Vision · Choice</span>
+      </div>
+      <div class="spine-item" role="listitem" data-goto="#s2" tabindex="0" aria-label="Go to Stage 2: What">
+        <span class="spine-qword">What</span>
+        <span class="spine-label">Objectives · Commitment</span>
+      </div>
+      <div class="spine-item" role="listitem" data-goto="#s3" tabindex="0" aria-label="Go to Stage 3: How">
+        <span class="spine-qword">How</span>
+        <span class="spine-label">Plans · Live It</span>
+      </div>
+      <div class="spine-item" role="listitem" data-goto="#s4" tabindex="0" aria-label="Go to Stage 4: When">
+        <span class="spine-qword">When</span>
+        <span class="spine-label">Execute · Learn It</span>
+      </div>
+      <div class="spine-item" role="listitem" data-goto="#s5" tabindex="0" aria-label="Go to Stage 5: Who">
+        <span class="spine-qword">Who</span>
+        <span class="spine-label">Identity · Leverage It</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FRAMEWORK MAP ══════════ -->
+<section id="map" aria-labelledby="map-heading">
+  <div class="container">
+    <div class="reveal">
+      <p class="eyebrow">The Full Framework at a Glance</p>
+      <h2 class="section-title" id="map-heading">Every Column.<br><em>Every Connection.</em></h2>
+    </div>
+    <p class="section-lead reveal rd1">Five questions. Five stages. Five attitude principles. One integrated framework for becoming who you are meant to be.</p>
+
+    <div class="map-grid reveal rd2" role="list" aria-label="Five stage overview">
+      <div class="map-col" role="listitem">
+        <div class="map-col-q" aria-hidden="true">Why</div>
+        <div class="map-col-stage">Stage One</div>
+        <div class="map-col-title">Purpose<br>Vision · Choice</div>
+        <div class="map-col-tags">
+          <span class="map-tag">Attitude</span>
+          <span class="map-tag">Beliefs</span>
+          <span class="map-tag">Values</span>
+        </div>
+        <div class="map-col-q-text">What do I want — and why? And why? And why?</div>
+      </div>
+      <div class="map-col" role="listitem">
+        <div class="map-col-q" aria-hidden="true">What</div>
+        <div class="map-col-stage">Stage Two</div>
+        <div class="map-col-title">Objectives<br>Belief · Commitment</div>
+        <div class="map-col-tags">
+          <span class="map-tag">Focus</span>
+          <span class="map-tag">Milestones</span>
+        </div>
+        <div class="map-col-q-text">What are the milestones that will get me there?</div>
+      </div>
+      <div class="map-col" role="listitem">
+        <div class="map-col-q" aria-hidden="true">How</div>
+        <div class="map-col-stage">Stage Three</div>
+        <div class="map-col-title">Plans<br>Act · Live It</div>
+        <div class="map-col-tags">
+          <span class="map-tag">Control</span>
+          <span class="map-tag">Daily Actions</span>
+        </div>
+        <div class="map-col-q-text">What can I control? What can I do now — today?</div>
+      </div>
+      <div class="map-col" role="listitem">
+        <div class="map-col-q" aria-hidden="true">When</div>
+        <div class="map-col-stage">Stage Four</div>
+        <div class="map-col-title">Execute<br>Observe · Learn It</div>
+        <div class="map-col-tags">
+          <span class="map-tag">Control</span>
+          <span class="map-tag">Speed to Adapt</span>
+        </div>
+        <div class="map-col-q-text">What do I notice myself doing? What feedback am I receiving?</div>
+      </div>
+      <div class="map-col" role="listitem">
+        <div class="map-col-q" aria-hidden="true">Who</div>
+        <div class="map-col-stage">Stage Five</div>
+        <div class="map-col-title">Evaluate<br>I Am · Leverage It</div>
+        <div class="map-col-tags">
+          <span class="map-tag">Winning</span>
+          <span class="map-tag">Identity</span>
+        </div>
+        <div class="map-col-q-text">Who am I? What is my new identity — on my own terms?</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ STAGE 1 — WHY ══════════ -->
+<section id="s1" class="stage-sec" aria-labelledby="s1-heading">
+  <span class="stage-watermark" aria-hidden="true">Why</span>
+  <div class="container">
+    <div class="stage-header reveal">
+      <div class="stage-q-word" aria-hidden="true">Why</div>
+      <div class="stage-name-row">
+        <h2 class="stage-name" id="s1-heading">Purpose · Vision · Choice</h2>
+      </div>
+      <div class="stage-tags" aria-label="Stage tags">
+        <span class="stag">Stage One</span>
+        <span class="stag outline">Attitude</span>
+        <span class="stag outline">Beliefs</span>
+        <span class="stag outline">Values</span>
+      </div>
+    </div>
+
+    <div class="stage-body">
+      <div class="q-panel reveal rd1">
+        <div class="q-panel-label">Questions — What do I want? And why? And why?</div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>The Root Why</strong>Why do I do what I do? Why do I get up in the morning? Keep asking why until you reach bedrock.</span>
+        </div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>Beliefs</strong>What do I believe about myself, others, and the world? Which beliefs are serving me — and which ones are holding me back?</span>
+        </div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>Values</strong>What do I prioritize? Where do I spend my time? Do my actions match what I say I value?</span>
+        </div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>Gifts &amp; Strengths</strong>What are my top 3 talents? My 5 gifts? My superpower — and my kryptonite?</span>
+        </div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>Vision</strong>If I could see my best possible future clearly — what would it look like? Can I see it right now?</span>
+        </div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>The Attitude Check</strong>Is my attitude helping me see clearly — or clouding the vision I need to make a real choice?</span>
+        </div>
+      </div>
+
+      <div class="qt-panel reveal rd2">
+        <div class="qt-panel-label">Voices That Point the Way</div>
+        <div class="qt-card lead">
+          <blockquote>"Everything can be taken from a man but one thing: the last of the human freedoms — to choose one's attitude in any given set of circumstances, to choose one's own way."</blockquote>
+          <cite>Viktor Frankl — Man's Search for Meaning</cite>
+        </div>
+        <div class="qt-card">
+          <blockquote>"We cannot choose to have a life free of hurt. But we can choose to be free, to escape the past, no matter what befalls us, and to embrace the possible."</blockquote>
+          <cite>Edith Eger — The Choice</cite>
+        </div>
+        <div class="qt-card">
+          <blockquote>"Let go of who you think you're supposed to be and embrace who you are. Authenticity is a collection of choices we have to make every day."</blockquote>
+          <cite>Brené Brown — The Gifts of Imperfection</cite>
+        </div>
+        <div class="qt-card">
+          <blockquote>"What you do proves what you believe."</blockquote>
+          <cite>Craig Manning</cite>
+        </div>
+        <div class="qt-card">
+          <blockquote>"Life is a 'tude. You can choose your attitude."</blockquote>
+          <cite>Attitude Cycle</cite>
+        </div>
+      </div>
+    </div>
+
+    <div class="att-bar reveal rd3">
+      <span class="att-word">Attitude</span>
+      <span class="att-desc"><strong>The condition:</strong> Attitude is the foundation of choice. You can only choose a direction you can clearly see — and your attitude determines what you are even willing to look at. This is where it all begins.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ STAGE 2 — WHAT ══════════ -->
+<section id="s2" class="stage-sec" aria-labelledby="s2-heading">
+  <span class="stage-watermark" aria-hidden="true">What</span>
+  <div class="container">
+    <div class="stage-header reveal">
+      <div class="stage-q-word" aria-hidden="true">What</div>
+      <div class="stage-name-row">
+        <h2 class="stage-name" id="s2-heading">Objectives · Belief · Commitment</h2>
+      </div>
+      <div class="stage-tags" aria-label="Stage tags">
+        <span class="stag">Stage Two</span>
+        <span class="stag outline">Focus</span>
+        <span class="stag outline">From X to Y by When</span>
+        <span class="stag outline">Purpose-Driven Milestones</span>
+      </div>
+    </div>
+
+    <div class="stage-body">
+      <div class="q-panel reveal rd1">
+        <div class="q-panel-label">Questions — What are the milestones that will get me there?</div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>The Milestone</strong>From X to Y — by when? Be honest about where you are. Be bold about where you're going.</span>
+        </div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>Can You See It?</strong>Can you see it? Do you believe it? Will you commit to it — fully, not partially?</span>
+        </div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>The Purpose Link</strong>Which part of my purpose does this objective fulfill — spiritually, emotionally, mentally, physically?</span>
+        </div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>The Feeling</strong>When I imagine achieving this — what do I feel? Does that feeling strengthen my commitment or expose doubt?</span>
+        </div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>Non-Negotiables</strong>What am I not willing to compromise on — regardless of pressure, circumstances, or other people's expectations?</span>
+        </div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>The Focus Check</strong>Where is my attention going right now? Is it pointed toward what I can own — or toward what I can't control?</span>
+        </div>
+      </div>
+
+      <div class="qt-panel reveal rd2">
+        <div class="qt-panel-label">Voices That Anchor Commitment</div>
+        <div class="qt-card lead">
+          <blockquote>"Those who have a 'why' to live can bear with almost any 'how.'"</blockquote>
+          <cite>Viktor Frankl — Man's Search for Meaning</cite>
+        </div>
+        <div class="qt-card">
+          <blockquote>"When you know your 'why,' your 'what' has more impact, because you're working on purpose, not just a task."</blockquote>
+          <cite>Simon Sinek</cite>
+        </div>
+        <div class="qt-card">
+          <blockquote>"Survivors don't have time to ask 'Why me?' For survivors, the only relevant question is: What now?"</blockquote>
+          <cite>Edith Eger — The Choice</cite>
+        </div>
+        <div class="qt-card">
+          <blockquote>"Vulnerability is the birthplace of love, belonging, joy, courage, empathy, and creativity. If we want greater clarity in our purpose, vulnerability is the path."</blockquote>
+          <cite>Brené Brown — Daring Greatly</cite>
+        </div>
+        <div class="qt-card">
+          <blockquote>"Get busy doing what we can to live the life that we choose — and not live someone else's idea of what our lives should be."</blockquote>
+          <cite>Craig Manning</cite>
+        </div>
+        <div class="qt-card">
+          <blockquote>"When I choose to have a great attitude and focus on the right things, I am choosing to stay in control. My self-belief skyrockets and my confidence builds."</blockquote>
+          <cite>Attitude Cycle</cite>
+        </div>
+      </div>
+    </div>
+
+    <div class="att-bar reveal rd3">
+      <span class="att-word">Focus</span>
+      <span class="att-desc"><strong>The condition:</strong> Focus is what turns a wish into a commitment. What you focus on grows. A milestone without focused attention is just a wish. When you direct your focus toward the process — not the outcome — commitment becomes sustainable.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ STAGE 3 — HOW ══════════ -->
+<section id="s3" class="stage-sec" aria-labelledby="s3-heading">
+  <span class="stage-watermark" aria-hidden="true">How</span>
+  <div class="container">
+    <div class="stage-header reveal">
+      <div class="stage-q-word" aria-hidden="true">How</div>
+      <div class="stage-name-row">
+        <h2 class="stage-name" id="s3-heading">Plans · Daily Actions · Live It</h2>
+      </div>
+      <div class="stage-tags" aria-label="Stage tags">
+        <span class="stag">Stage Three</span>
+        <span class="stag outline">Control</span>
+        <span class="stag outline">2–3 Actions Today</span>
+        <span class="stag outline">Mastery of the Routine</span>
+      </div>
+    </div>
+
+    <div class="stage-body">
+      <div class="q-panel reveal rd1">
+        <div class="q-panel-label">Questions — What can I control? What can I do now? Today?</div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>The Controllable</strong>Of everything on my plate — what can I actually control? What is mine to do today?</span>
+        </div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>The 2–3 Things</strong>What are the 2–3 specific actions I will take today — this week — this sprint — that bring me closer to my objectives?</span>
+        </div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>The Purpose Link</strong>Are my daily plans actually moving me toward my purpose — or just keeping me busy?</span>
+        </div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>The Skill</strong>What skill do I need to develop to perform at the level I am committing to? How am I deliberately practicing it?</span>
+        </div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>The Energy Drain</strong>Where am I burning energy on things I can't control? What would it free up if I let those go?</span>
+        </div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>The Love Test</strong>Do I love what I'm doing enough to do it with full effort — even when it's hard?</span>
+        </div>
+      </div>
+
+      <div class="qt-panel reveal rd2">
+        <div class="qt-panel-label">Voices That Move You to Action</div>
+        <div class="qt-card lead">
+          <blockquote>"I chose to focus on what I could do each day, no matter how small, and I kept pushing myself to be better — 1% at a time."</blockquote>
+          <cite>Kray — Attitude Cycle</cite>
+        </div>
+        <div class="qt-card">
+          <blockquote>"The secret of your future is hidden in your daily routine."</blockquote>
+          <cite>Mike Murdock</cite>
+        </div>
+        <div class="qt-card">
+          <blockquote>"High performance isn't about what job you have — it is about how you perform your job. High performance has very little to do with the arena and an awful lot to do with mastering skills."</blockquote>
+          <cite>Craig Manning</cite>
+        </div>
+        <div class="qt-card">
+          <blockquote>"What are you going to do about it? Change and freedom require positive action. Anything we practice, we become better at."</blockquote>
+          <cite>Edith Eger — The Choice</cite>
+        </div>
+        <div class="qt-card">
+          <blockquote>"Courage starts with showing up and letting ourselves be seen."</blockquote>
+          <cite>Brené Brown — Daring Greatly</cite>
+        </div>
+        <div class="qt-card">
+          <blockquote>"The only way to do great work is to love what you do."</blockquote>
+          <cite>Steve Jobs</cite>
+        </div>
+      </div>
+    </div>
+
+    <div class="att-bar reveal rd3">
+      <span class="att-word">Control</span>
+      <span class="att-desc"><strong>The condition:</strong> Control the controllable — let the rest go. When you focus only on what you can own, you perform at your best. Trying to control outcomes you don't own is where energy bleeds and confidence erodes. Own the process. Trust it.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ STAGE 4 — WHEN ══════════ -->
+<section id="s4" class="stage-sec" aria-labelledby="s4-heading">
+  <span class="stage-watermark" aria-hidden="true">When</span>
+  <div class="container">
+    <div class="stage-header reveal">
+      <div class="stage-q-word" aria-hidden="true">When</div>
+      <div class="stage-name-row">
+        <h2 class="stage-name" id="s4-heading">Execute · Hear &amp; Observe · Learn It</h2>
+      </div>
+      <div class="stage-tags" aria-label="Stage tags">
+        <span class="stag">Stage Four</span>
+        <span class="stag outline">5+ to 1</span>
+        <span class="stag outline">Speed to Adapt</span>
+        <span class="stag outline">Intentional Reflection</span>
+      </div>
+    </div>
+
+    <div class="stage-body">
+      <div class="q-panel reveal rd1">
+        <div class="q-panel-label">Questions — What do I notice? What feedback am I receiving?</div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>5+ Wins</strong>What are the 3–5 things I did well? How will I celebrate them — intentionally, not accidentally?</span>
+        </div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>The 1 Thing</strong>If I could do it again — what is the one thing I would do differently? What does that reveal?</span>
+        </div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>What I Notice</strong>What patterns am I seeing in my behavior, my results, my relationships? What is the data telling me?</span>
+        </div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>Bad Moment or Bad Day?</strong>Am I responding to a moment as if it's the whole story? Is this a bad 5 minutes or a bad day?</span>
+        </div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>The Feedback</strong>What am I hearing from others that I have been reluctant to receive? What truth is hiding in the discomfort?</span>
+        </div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>The Adjustment</strong>Do my objectives still fit who I'm becoming — or do they need to be courageously updated?</span>
+        </div>
+      </div>
+
+      <div class="qt-panel reveal rd2">
+        <div class="qt-panel-label">Voices That Sharpen Awareness</div>
+        <div class="qt-card lead">
+          <blockquote>"When we are no longer able to change a situation, we are challenged to change ourselves."</blockquote>
+          <cite>Viktor Frankl — Man's Search for Meaning</cite>
+        </div>
+        <div class="qt-card">
+          <blockquote>"Time doesn't heal. It's what you do with the time. Healing is possible when we choose to take responsibility, take risks, and release the wound."</blockquote>
+          <cite>Edith Eger — The Choice</cite>
+        </div>
+        <div class="qt-card">
+          <blockquote>"Owning our story can be hard, but not nearly as difficult as spending our lives running from it. Only when we are brave enough to explore the darkness will we discover the infinite power of our light."</blockquote>
+          <cite>Brené Brown — Daring Greatly</cite>
+        </div>
+        <div class="qt-card">
+          <blockquote>"We need the courage to adjust our objectives — and to do it because we feel good about it, not in reaction to demands from others."</blockquote>
+          <cite>Craig Manning</cite>
+        </div>
+        <div class="qt-card">
+          <blockquote>"Is it a bad 5 minutes or a bad day? You can break your day into smaller chunks to evaluate how you're doing."</blockquote>
+          <cite>Attitude Cycle</cite>
+        </div>
+        <div class="qt-card">
+          <blockquote>"I realized that worrying about what I couldn't control would only hold me back."</blockquote>
+          <cite>Kray — Attitude Cycle</cite>
+        </div>
+      </div>
+    </div>
+
+    <div class="att-bar reveal rd3">
+      <span class="att-word">Speed to Adapt</span>
+      <span class="att-desc"><strong>The condition:</strong> A healthy attitude shrinks the gap between what happened and what you do next. You don't dwell — you learn and move. The faster you can hear feedback without defensiveness, the faster you grow.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ STAGE 5 — WHO ══════════ -->
+<section id="s5" class="stage-sec" aria-labelledby="s5-heading">
+  <span class="stage-watermark" aria-hidden="true">Who</span>
+  <div class="container">
+    <div class="stage-header reveal">
+      <div class="stage-q-word" aria-hidden="true">Who</div>
+      <div class="stage-name-row">
+        <h2 class="stage-name" id="s5-heading">Evaluate · I Am · Leverage It</h2>
+      </div>
+      <div class="stage-tags" aria-label="Stage tags">
+        <span class="stag">Stage Five</span>
+        <span class="stag outline">New Identity</span>
+        <span class="stag outline">Winning on My Terms</span>
+        <span class="stag outline">I Know Who I Am</span>
+      </div>
+    </div>
+
+    <div class="stage-body">
+      <div class="q-panel reveal rd1">
+        <div class="q-panel-label">Questions — Who am I? What is my new identity?</div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>I Am…</strong>Complete this sentence honestly and boldly: I am someone who… What words belong there now that didn't before?</span>
+        </div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>What I Know</strong>What do I now know about myself — about my strengths, my patterns, my purpose — that I didn't know when I started?</span>
+        </div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>My Personal Benchmarks</strong>Am I hitting the goals I set for myself — on my own terms, not someone else's definition of success?</span>
+        </div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>What I Share</strong>What has this journey given me that is worth passing on? Who needs to hear my story?</span>
+        </div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>The Legacy Question</strong>If a family member described the person I've become — what would I hope they say? Are those words true yet?</span>
+        </div>
+        <div class="q-item">
+          <span class="q-bullet" aria-hidden="true">→</span>
+          <span class="q-text"><strong>Winning</strong>Am I facing in the right direction — and if so, am I winning? By my own definition — not anyone else's?</span>
+        </div>
+      </div>
+
+      <div class="qt-panel reveal rd2">
+        <div class="qt-panel-label">Voices That Name the New Identity</div>
+        <div class="qt-card lead">
+          <blockquote>"Our painful experiences aren't a liability — they're a gift. They give us perspective and meaning, an opportunity to find our unique purpose and our strength."</blockquote>
+          <cite>Edith Eger — The Choice</cite>
+        </div>
+        <div class="qt-card">
+          <blockquote>"Being human always points, and is directed, to something or someone other than oneself — be it a meaning to fulfill or another human being to encounter."</blockquote>
+          <cite>Viktor Frankl</cite>
+        </div>
+        <div class="qt-card">
+          <blockquote>"You either walk inside your story and own it, or you stand outside your story and hustle for your worthiness."</blockquote>
+          <cite>Brené Brown</cite>
+        </div>
+        <div class="qt-card">
+          <blockquote>"How do we define winning? If you are hitting your goals — or even if you are facing in the right direction — you're winning."</blockquote>
+          <cite>Attitude Cycle</cite>
+        </div>
+        <div class="qt-card">
+          <blockquote>"No one can take away from you what you've put in your own mind."</blockquote>
+          <cite>Edith Eger's mother — spoken at the gates of Auschwitz</cite>
+        </div>
+        <div class="qt-card">
+          <blockquote>"One of the most resilient people have in common: they understand who they are — and they don't try to be another way, because incongruent living is not sustainable."</blockquote>
+          <cite>Brené Brown — The Power of Vulnerability</cite>
+        </div>
+      </div>
+    </div>
+
+    <div class="att-bar reveal rd3">
+      <span class="att-word">Winning</span>
+      <span class="att-desc"><strong>The condition:</strong> Winning isn't a scoreboard — it's alignment. When your identity, your attitude, and your actions are congruent with your purpose, you are winning. By your definition. On your terms. That's the only kind that lasts.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ ATTITUDE ══════════ -->
+<section id="attitude" aria-labelledby="attitude-heading">
+  <div class="container">
+    <div class="reveal">
+      <p class="eyebrow" style="color:var(--gold);">The Thread Running Through Everything</p>
+      <h2 class="att-section-title" id="attitude-heading">Attitude<br><em>The Soil of Every Stage</em></h2>
+    </div>
+
+    <div class="frankl-hero reveal rd1">
+      <blockquote>"Between stimulus and response there is a space. In that space is our power to choose our response. In our response lies our growth and our freedom."</blockquote>
+    </div>
+
+    <div class="laws-row reveal rd2">
+      <div class="law-card">
+        <div class="law-num" aria-hidden="true">I</div>
+        <div class="law-title">Life is a 'Tude</div>
+        <div class="law-body">You have full control over your ability to choose your attitude — not your circumstances, but your response to them. This is the last and most powerful human freedom.</div>
+        <div class="law-qt">"If you wouldn't say that to somebody else, why say it to yourself?"</div>
+      </div>
+      <div class="law-card">
+        <div class="law-num" aria-hidden="true">II</div>
+        <div class="law-title">What You Focus on Grows</div>
+        <div class="law-body">An abundance mindset sees things with greater depth and clarity. Whatever you look for, you will find. Gratitude and possibility are a choice made before results arrive.</div>
+        <div class="law-qt">"Where my focus goes, my energy flows."</div>
+      </div>
+      <div class="law-card">
+        <div class="law-num" aria-hidden="true">III</div>
+        <div class="law-title">Control the Controllable</div>
+        <div class="law-body">Let go of what you cannot own. Illness, anxiety, and diminished performance often come from trying to control what was never yours to control. Own the process. Trust it.</div>
+        <div class="law-qt">"I can only control me."</div>
+      </div>
+    </div>
+
+    <div class="outcomes-row reveal rd3">
+      <div class="outcome-card">
+        <div class="outcome-att">Why</div>
+        <div class="outcome-stage">Attitude</div>
+        <div class="outcome-body">The foundation. Attitude is the condition of every stage — not a step, but the soil.</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-att">What</div>
+        <div class="outcome-stage">Focus</div>
+        <div class="outcome-body">What you focus on grows. Direct attention toward the process, not the outcome.</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-att">How</div>
+        <div class="outcome-stage">Control</div>
+        <div class="outcome-body">Own what you can. Release what you can't. Act from that clean, clear place.</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-att">When</div>
+        <div class="outcome-stage">Speed to Adapt</div>
+        <div class="outcome-body">Shrink the gap between what happened and what you do next. Learn and move.</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-att">Who</div>
+        <div class="outcome-stage">Winning</div>
+        <div class="outcome-body">Facing the right direction. Hitting your benchmarks. On your terms — not anyone else's.</div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:1px;background:rgba(255,255,255,0.06);" class="reveal rd4">
+      <div class="qt-card" style="background:rgba(255,255,255,0.04);">
+        <blockquote style="color:rgba(250,247,242,0.75);">"Freedom is about choice — about choosing compassion, humor, optimism, intuition, curiosity, and self-expression."</blockquote>
+        <cite style="color:var(--gold-light);">Edith Eger — The Choice</cite>
+      </div>
+      <div class="qt-card" style="background:rgba(255,255,255,0.04);">
+        <blockquote style="color:rgba(250,247,242,0.75);">"We can choose courage, or we can choose comfort, but we can't have both. Not at the same time."</blockquote>
+        <cite style="color:var(--gold-light);">Brené Brown</cite>
+      </div>
+      <div class="qt-card" style="background:rgba(255,255,255,0.04);">
+        <blockquote style="color:rgba(250,247,242,0.75);">"You are responsible for the energy you bring into this room."</blockquote>
+        <cite style="color:var(--gold-light);">Brené Brown — The Power of Vulnerability</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CLOSING ══════════ -->
+<section id="closing" aria-labelledby="closing-heading">
+  <div class="container" style="text-align:center;">
+    <div class="reveal">
+      <h2 class="closing-title" id="closing-heading">The Question<br><em>for Every Stage · Every Day</em></h2>
+    </div>
+    <div class="closing-quotes reveal rd1">
+      <div class="closing-qt">
+        "It did not really matter what we expected from life, but rather what life expected from us."
+        <cite>Viktor Frankl — Man's Search for Meaning</cite>
+      </div>
+      <div class="closing-qt">
+        "You can't change what happened. But you can choose how you live now."
+        <cite>Edith Eger — The Choice</cite>
+      </div>
+      <div class="closing-qt">
+        "Owning our story and loving ourselves through that process is the bravest thing that we will ever do."
+        <cite>Brené Brown</cite>
+      </div>
+      <div class="closing-qt">
+        "Get busy doing what we can to live the life that we choose — not someone else's idea of what our lives should be."
+        <cite>Craig Manning</cite>
+      </div>
+    </div>
+    <div class="reveal rd2">
+      <div class="final-question">"What attitude will I choose today?"</div>
+    </div>
+    <p style="margin-top:1.5rem;font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--ink-mute);" class="reveal rd3">
+      Why · What · How · When · Who
+    </p>
+    <p class="reveal rd4" style="margin-top:2.5rem;">
+      <a href="../../index.html" style="font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(184,150,90,0.3);padding-bottom:2px;">← Back to Attitude Cycle</a>
+    </p>
+  </div>
+</section>
+
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  // ─── Smooth scroll helper ───
+  function goTo(id) {
+    const el = document.querySelector(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ─── Nav pill scroll targets ───
+  const navTargets = ['#hero', '#map', '#s1', '#s2', '#s3', '#s4', '#s5', '#attitude', '#closing'];
+  document.querySelectorAll('.nav-pill').forEach(function (pill, i) {
+    pill.addEventListener('click', function () { goTo(navTargets[i]); });
+  });
+
+  // ─── Hero spine click + keyboard ───
+  document.querySelectorAll('.spine-item[data-goto]').forEach(function (item) {
+    item.addEventListener('click', function () { goTo(item.dataset.goto); });
+    item.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goTo(item.dataset.goto); }
+    });
+  });
+
+  // ─── Reveal on scroll ───
+  const reveals = document.querySelectorAll('.reveal');
+  const ro = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(function (el) { ro.observe(el); });
+
+  // ─── Nav active state ───
+  const sectionMap = [
+    { id: 'hero',     idx: 0 }, { id: 'map',      idx: 1 },
+    { id: 's1',       idx: 2 }, { id: 's2',       idx: 3 },
+    { id: 's3',       idx: 4 }, { id: 's4',       idx: 5 },
+    { id: 's5',       idx: 6 }, { id: 'attitude', idx: 7 },
+    { id: 'closing',  idx: 8 }
+  ];
+  const pills = document.querySelectorAll('.nav-pill');
+  const so = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        const found = sectionMap.find(function (s) { return s.id === e.target.id; });
+        if (found) pills.forEach(function (p, i) { p.classList.toggle('active', i === found.idx); });
+      }
+    });
+  }, { threshold: 0.4 });
+  sectionMap.forEach(function (s) { const el = document.getElementById(s.id); if (el) so.observe(el); });
+
+}());
+</script>
+</body>
+</html>

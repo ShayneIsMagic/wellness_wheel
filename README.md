@@ -1,70 +1,51 @@
-# Harbor Compass
+# Attitude Cycle
 
-A single-page wellness reflection tool based on the **Stanford WELL for Life** ten domains. Listed on the [Attitude Cycle tools hub](https://shayneismagic.github.io/ZBTools/) for [attitudecycle.com](https://attitudecycle.com). Users work through a visual wheel, dimension wizards, vision statements, focused actions, and a simple budget view. All progress is saved in the browser (localStorage); nothing is sent to a server unless you add analytics later.
+Static site for [Attitude Cycle](https://attitudecycle.com) — brand landing plus interactive tools. Each tool lives in its own folder under `tools/` so new ones can be added without new repos.
+
+## Site map
+
+| URL path | Tool |
+|----------|------|
+| `/` | **Landing** — Attitude as the soil of every stage |
+| `/tools/purpose-driven/` | **Purpose Driven Exercise** — Five Stages (Why · What · How · When · Who) |
+| `/tools/harbor-compass/` | **Harbor Compass** — Wellness wheel, ten dimensions, vision, actions, budget |
+
+More tools: copy `tools/_template/` and register on `index.html`.
 
 ## Running locally
 
-From the project root:
-
 ```bash
 npm run dev
+# or: npx --yes serve .
 ```
 
-Or without npm:
+Open http://localhost:3000
 
-```bash
-npx --yes serve .
-```
+## Deploy
 
-Then open `http://localhost:3000` (or the URL shown in the terminal).
+Push to `main` → GitHub Actions (`.github/workflows/deploy-pages.yml`) publishes GitHub Pages.
 
-## Project structure
+- **Default URL:** `https://shayneismagic.github.io/wellness_wheel/` until the repo is renamed or a custom domain is set
+- **Custom domain:** Settings → Pages → set `attitudecycle.com` (and update Cloudflare `@` / `www` to GitHub Pages)
+
+## Repo layout
 
 ```
 /
-├── index.html          # App entry
-├── css/main.css        # Shared styles
-├── js/main.js          # App logic
-├── assets/             # Icons and images (when added)
-├── 404.html            # Not found (for static hosts)
-├── AGENTS.md           # Guidelines for AI agents and contributors
-├── archive/            # Legacy single-file build (reference only)
-└── README.md
+├── index.html
+├── tools/
+│   ├── purpose-driven/
+│   ├── harbor-compass/
+│   └── _template/
+├── 404.html
+├── AGENTS.md
+└── archive/
 ```
 
-## Git workflow
+## Privacy
 
-When multiple people work in this repo:
+Tool data is stored in the browser (`localStorage`) unless the user exports a backup. Nothing is sent to a server by default.
 
-1. Branch from `main` using `<initials>/harbor-compass` (example: `sr/harbor-compass`).
-2. Make changes on that branch.
-3. Open a pull request into `main`; merge when reviewed.
-4. `main` deploys automatically to GitHub Pages (see below).
+## Legacy repos
 
-## Share with a link (public hosting)
-
-This site is static HTML/CSS/JS — no backend required. The recommended way to give **anyone with a link** access is **GitHub Pages**.
-
-### One-time setup
-
-1. Create a GitHub repository and push this project to `main`.
-2. On GitHub: **Settings → Pages → Build and deployment**
-   - **Source:** GitHub Actions
-3. Push to `main`. The workflow in `.github/workflows/deploy-pages.yml` publishes the site.
-4. Your public URL will look like:
-   - `https://<username>.github.io/<repo-name>/`
-   - Or a custom domain if you configure one under Pages settings.
-
-After setup, every push to `main` updates the live site. Share that URL with anyone who should use Harbor Compass.
-
-### Other hosts
-
-You can also deploy the same folder to [Netlify](https://www.netlify.com/), [Cloudflare Pages](https://pages.cloudflare.com/), or any static file host. Upload the repo root (not `archive/`). Set the publish directory to `/` and `index.html` as the entry.
-
-## Privacy note
-
-User reflections and scores stay in **localStorage** on each device. Export/backup JSON is downloaded only when the user chooses. Document this when sharing the public link.
-
-## Documentation
-
-See [AGENTS.md](./AGENTS.md) for HTML/CSS/JS conventions, accessibility expectations, and agent build guidelines.
+- [ZBTools](https://github.com/ShayneIsMagic/ZBTools) — retired; use this repo instead.

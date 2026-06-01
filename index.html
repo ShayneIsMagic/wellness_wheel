@@ -1,340 +1,437 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Harbor Compass — a reflective wellness wheel based on Stanford WELL for Life. Explore ten life dimensions, set vision, and plan focused actions. Data stays in your browser.">
-<meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0E1419" media="(prefers-color-scheme: dark)">
-<title>Harbor — Compass</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,300;9..144,0,400;9..144,0,500;9..144,0,600;9..144,1,300;9..144,1,400;9..144,1,500&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/main.css">
+<title>Attitude Cycle · Navigate Change with Confidence</title>
+<meta name="description" content="Attitude Cycle — attitude as the soil of every stage. Open the Purpose Driven Exercise or Harbor Compass wellness wheel.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink:        #1a1714;
+  --ink-soft:   #4a4540;
+  --ink-mute:   #8a8078;
+  --gold:       #b8965a;
+  --gold-light: #d4b07a;
+  --gold-pale:  #f0e4cc;
+  --cream:      #faf7f2;
+  --cream-dark: #f0ebe2;
+  --white:      #ffffff;
+  --s1: #4a3d6b;
+  --s2: #2d6b5e;
+  --s3: #7a5a18;
+  --s4: #7a3028;
+  --s5: #1e4468;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--ink);
+  color: var(--cream);
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ─── SKIP LINK ─── */
+.skip-link {
+  position: absolute; top: -100px; left: 1rem; z-index: 999;
+  background: var(--gold); color: var(--ink);
+  padding: 0.5rem 1rem; font-size: 0.75rem; font-weight: 500;
+  transition: top 0.2s;
+}
+.skip-link:focus { top: 1rem; }
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: rgba(26,23,20,0.92);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(184,150,90,0.15);
+  height: 54px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem;
+}
+.nav-brand {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem; font-weight: 400;
+  letter-spacing: 0.1em; color: rgba(250,247,242,0.6);
+  text-decoration: none;
+}
+.nav-tools {
+  display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+}
+.nav-cta {
+  font-size: 0.6rem; font-weight: 500;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); cursor: pointer;
+  border: 1px solid rgba(184,150,90,0.4);
+  border-radius: 2px; padding: 0.3rem 0.9rem;
+  background: transparent; transition: all 0.25s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.nav-cta:hover { background: var(--gold); color: var(--ink); }
+.nav-cta.secondary {
+  color: rgba(250,247,242,0.75);
+  border-color: rgba(255,255,255,0.2);
+}
+.nav-cta.secondary:hover {
+  background: rgba(255,255,255,0.1);
+  color: var(--cream);
+}
+
+/* ─── MAIN LAYOUT ─── */
+main { display: flex; flex-direction: column; }
+
+/* ─── HERO — ATTITUDE ─── */
+#attitude-hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 80px 2rem 60px;
+  position: relative; overflow: hidden;
+}
+#attitude-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 40%, rgba(184,150,90,0.09) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 45% at 10% 80%, rgba(74,61,107,0.14) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 90% 15%, rgba(45,107,94,0.10) 0%, transparent 60%);
+  pointer-events: none;
+}
+/* Watermark */
+#attitude-hero::after {
+  content: 'Attitude';
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(10rem, 28vw, 22rem);
+  font-weight: 300; font-style: italic;
+  line-height: 1; opacity: 0.03;
+  position: absolute; bottom: -2rem; right: -2rem;
+  pointer-events: none; color: var(--cream);
+  user-select: none; white-space: nowrap;
+}
+.container { max-width: 880px; margin: 0 auto; width: 100%; position: relative; z-index: 1; }
+
+.hero-eyebrow {
+  font-size: 0.62rem; font-weight: 600;
+  letter-spacing: 0.4em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 1.5rem;
+  opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+}
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3.5rem, 9vw, 7rem);
+  font-weight: 300; line-height: 1.0;
+  color: var(--cream); margin-bottom: 0.4rem;
+  opacity: 0; animation: fadeUp 0.9s 0.35s forwards;
+}
+.hero-title em { font-style: italic; color: var(--gold-light); }
+.hero-sub-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  font-weight: 300; font-style: italic;
+  color: rgba(250,247,242,0.45);
+  margin-bottom: 2.5rem;
+  opacity: 0; animation: fadeUp 0.9s 0.5s forwards;
+}
+
+/* Frankl box */
+.frankl-hero {
+  border: 1px solid rgba(184,150,90,0.25);
+  padding: 2rem 2.5rem; text-align: center;
+  position: relative; margin: 0 0 2.5rem;
+  opacity: 0; animation: fadeUp 0.9s 0.65s forwards;
+  max-width: 680px;
+}
+.frankl-hero::before {
+  content: 'Viktor Frankl  ·  Man\'s Search for Meaning';
+  position: absolute; top: -0.6rem; left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  padding: 0 0.75rem;
+  font-size: 0.58rem; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--gold);
+  white-space: nowrap; font-weight: 500;
+}
+.frankl-hero blockquote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.05rem, 2.6vw, 1.5rem);
+  font-style: italic; color: rgba(250,247,242,0.85);
+  line-height: 1.55;
+}
+
+/* Laws grid */
+.laws-row {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: rgba(255,255,255,0.06);
+  margin-bottom: 1px;
+  opacity: 0; animation: fadeUp 0.9s 0.8s forwards;
+}
+.law-card {
+  background: rgba(255,255,255,0.03);
+  padding: 1.5rem;
+  transition: background 0.3s;
+}
+.law-card:hover { background: rgba(255,255,255,0.07); }
+.law-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem; font-weight: 300;
+  color: var(--gold); line-height: 1; margin-bottom: 0.4rem;
+}
+.law-title {
+  font-size: 0.62rem; font-weight: 600;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold-light); margin-bottom: 0.5rem;
+}
+.law-body {
+  font-size: 0.82rem; line-height: 1.6;
+  color: rgba(250,247,242,0.55);
+}
+.law-qt {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-size: 0.9rem;
+  color: rgba(250,247,242,0.35); margin-top: 0.75rem; line-height: 1.5;
+}
+
+/* Outcomes row */
+.outcomes-row {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  gap: 1px; background: rgba(255,255,255,0.06);
+  margin-bottom: 2.5rem;
+  opacity: 0; animation: fadeUp 0.9s 0.9s forwards;
+}
+.outcome-card {
+  background: rgba(255,255,255,0.03);
+  padding: 1.25rem 1.5rem;
+  transition: background 0.3s;
+}
+.outcome-card:hover { background: rgba(255,255,255,0.06); }
+.outcome-att {
+  font-size: 0.72rem; font-weight: 500;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: rgba(250,247,242,0.28); margin-bottom: 0.35rem;
+}
+.outcome-stage {
+  font-size: 0.62rem; font-weight: 600;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.4rem;
+}
+.outcome-body {
+  font-size: 0.8rem; line-height: 1.6;
+  color: rgba(250,247,242,0.5);
+}
+
+/* Quote trio */
+.quotes-trio {
+  display: flex; flex-direction: column; gap: 1px;
+  background: rgba(255,255,255,0.06);
+  margin-bottom: 3rem;
+  opacity: 0; animation: fadeUp 0.9s 1.0s forwards;
+}
+.qt-card {
+  background: rgba(255,255,255,0.03);
+  padding: 1.2rem 1.5rem;
+  transition: background 0.3s;
+}
+.qt-card:hover { background: rgba(255,255,255,0.05); }
+.qt-card blockquote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem; font-style: italic;
+  color: rgba(250,247,242,0.72); line-height: 1.6;
+}
+.qt-card cite {
+  display: block; font-style: normal;
+  font-size: 0.6rem; letter-spacing: 0.2em;
+  text-transform: uppercase; margin-top: 0.5rem;
+  font-weight: 500; color: var(--gold-light);
+}
+
+/* CTA block */
+.cta-block {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; gap: 1.25rem;
+  opacity: 0; animation: fadeUp 0.9s 1.1s forwards;
+}
+.cta-label {
+  font-size: 0.6rem; font-weight: 500;
+  letter-spacing: 0.35em; text-transform: uppercase;
+  color: rgba(250,247,242,0.35);
+}
+.cta-btn {
+  display: inline-block;
+  padding: 1rem 3rem;
+  border: 1px solid var(--gold);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  font-style: italic; color: var(--cream);
+  letter-spacing: 0.05em;
+  cursor: pointer; background: transparent;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+.cta-btn:hover {
+  background: var(--gold); color: var(--ink);
+}
+.cta-hint {
+  font-size: 0.65rem; color: rgba(250,247,242,0.25);
+  letter-spacing: 0.15em;
+}
+.cta-row {
+  display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;
+}
+.cta-btn.wellness {
+  border-color: rgba(0,172,193,0.55);
+  color: var(--cream);
+}
+.cta-btn.wellness:hover {
+  background: #2d6b5e;
+  border-color: #2d6b5e;
+  color: var(--cream);
+}
+
+/* Stage chips at CTA */
+.stage-chips {
+  display: flex; gap: 2px; flex-wrap: wrap; justify-content: center;
+}
+.chip {
+  font-size: 0.55rem; font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 0.22rem 0.65rem; border-radius: 2px; color: white;
+}
+.chip-s1 { background: var(--s1); }
+.chip-s2 { background: var(--s2); }
+.chip-s3 { background: var(--s3); }
+.chip-s4 { background: var(--s4); }
+.chip-s5 { background: var(--s5); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 680px) {
+  .laws-row { grid-template-columns: 1fr; }
+  .outcomes-row { grid-template-columns: repeat(2, 1fr); }
+  nav { padding: 0 1rem; }
+}
+
+/* ─── ANIMATION ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
 </head>
 <body>
-<a class="skip-link" href="#main">Skip to main content</a>
-<div class="app">
-  <header>
-    <div class="brand">
-      <div class="brand-mark">H</div>
-      <div class="brand-text">
-        <h1>Harbor <em>Compass</em></h1>
-        <div class="tag">Navigate Your Whole Life</div>
-      </div>
-    </div>
-    <div class="header-actions">
-      <button class="header-btn primary" id="action-export-pdf" title="Generate a polished PDF report of your full work">
-        <span class="hb-icon" aria-hidden="true">⤓</span> Export PDF
-      </button>
-      <button class="header-btn" id="action-download-json" title="Download a JSON backup file to your computer">
-        <span class="hb-icon" aria-hidden="true">↓</span> Download backup
-      </button>
-      <button class="header-btn" id="action-import-json" title="Restore from a previously-downloaded JSON backup">
-        <span class="hb-icon" aria-hidden="true">↑</span> Restore backup
-      </button>
-      <input type="file" id="import-file-input" accept="application/json,.json" hidden />
-    </div>
-    <div class="header-meta">
-      <div>Domains adapted from · <strong>Stanford WELL for Life</strong></div>
-      <div id="date-line" class="date-line">—</div>
-    </div>
-  </header>
 
-  <nav class="tab-nav">
-    <button class="active" data-pane="overview"><span class="num">01</span>The Wheel</button>
-    <button data-pane="dimension"><span class="num">02</span>Dimension Work</button>
-    <button data-pane="vision"><span class="num">03</span>Vision Statement</button>
-    <button data-pane="actions"><span class="num">04</span>Focused Actions</button>
-    <button data-pane="fund"><span class="num">05</span>Fund the Life</button>
-  </nav>
+<a href="#main" class="skip-link">Skip to main content</a>
 
-  <main id="main">
-  <!-- PANE 1: OVERVIEW -->
-  <section class="pane active" id="pane-overview">
-    <div class="intro-grid">
-      <div>
-        <div class="kicker">Begin Here · The Whole Life</div>
-        <h2>Ten dimensions, <em>one life</em>.</h2>
-        <p>The Stanford WELL for Life Scale identifies ten domains that together make up well-being. This tool borrows those ten domains as a structure for reflection — it is not the validated scale itself, and the numbers you'll give are your own subjective sense of each area, not test scores. For each domain you'll be guided through five steps: understand what it means, reflect in writing, rate how it feels, declare who you're becoming, and commit to a focused action. Click any petal to begin.</p>
-      </div>
-      <div class="pull">
-        "Ten domains of well-being were identified: social connectedness, lifestyle and daily practices, physical health, stress and resilience, emotional and mental health, purpose and meaning, sense of self, financial security and satisfaction, spirituality and religiosity, and exploration and creativity."
-        <cite>— Chrisinger et al., Stanford WELL for Life Scale (2019)</cite>
-      </div>
+<nav aria-label="Site navigation">
+  <a href="index.html" class="nav-brand">Attitude <span style="color:var(--gold)">Cycle</span></a>
+  <div class="nav-tools">
+    <a href="tools/purpose-driven/" class="nav-cta" aria-label="Open the Purpose Driven Exercise">Purpose Driven Exercise</a>
+    <a href="tools/harbor-compass/" class="nav-cta secondary" aria-label="Open Harbor Compass wellness wheel">Harbor Compass →</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- ══════════ ATTITUDE HERO ══════════ -->
+<section id="attitude-hero" aria-labelledby="attitude-heading">
+  <div class="container">
+
+    <p class="hero-eyebrow">The Thread Running Through Everything</p>
+    <h1 class="hero-title" id="attitude-heading">Attitude<br><em>The Soil of Every Stage</em></h1>
+    <p class="hero-sub-title">Why · What · How · When · Who</p>
+
+    <div class="frankl-hero" role="figure" aria-label="Viktor Frankl quote">
+      <blockquote>"Between stimulus and response there is a space. In that space is our power to choose our response. In our response lies our growth and our freedom."</blockquote>
     </div>
-    <div class="wheel-overview">
-      <div class="wheel-stage">
-        <svg viewBox="-190 -180 380 360" id="wheel-svg"></svg>
-        <div class="wheel-center-card">
-          <div class="label">Well-being</div>
-          <div class="word">your<br/>whole life</div>
-          <div class="ring-legend">inner = now<br/>outer = vision</div>
-        </div>
+
+    <div class="laws-row" role="list" aria-label="The three laws of attitude">
+      <div class="law-card" role="listitem">
+        <div class="law-num" aria-hidden="true">I</div>
+        <div class="law-title">Life is a 'Tude</div>
+        <div class="law-body">You have full control over your ability to choose your attitude — not your circumstances, but your response to them. This is the last and most powerful human freedom.</div>
+        <div class="law-qt">"If you wouldn't say that to somebody else, why say it to yourself?"</div>
       </div>
-      <div>
-        <div class="progress-card">
-          <h4>Your progress on the wheel</h4>
-          <div class="sub">Each segment fills as you complete that dimension's wizard.</div>
-          <div class="progress-meter" id="progress-meter"></div>
-          <div class="progress-stats" id="progress-stats"></div>
-        </div>
-        <button class="next-cta" id="next-cta">
-          <span id="next-cta-label">Begin with Physical Health</span>
-          <span>→</span>
-        </button>
+      <div class="law-card" role="listitem">
+        <div class="law-num" aria-hidden="true">II</div>
+        <div class="law-title">What You Focus on Grows</div>
+        <div class="law-body">An abundance mindset sees things with greater depth and clarity. Whatever you look for, you will find. Gratitude and possibility are a choice made before results arrive.</div>
+        <div class="law-qt">"Where my focus goes, my energy flows."</div>
+      </div>
+      <div class="law-card" role="listitem">
+        <div class="law-num" aria-hidden="true">III</div>
+        <div class="law-title">Control the Controllable</div>
+        <div class="law-body">Let go of what you cannot own. Illness, anxiety, and diminished performance often come from trying to control what was never yours to control. Own the process. Trust it.</div>
+        <div class="law-qt">"I can only control me."</div>
       </div>
     </div>
 
-    <!-- Dimension preview cards — populated by JS -->
-    <div class="overview-section">
-      <div class="overview-section-head">
-        <h3>Your ten dimensions <em>· click any to begin or refine</em></h3>
-        <div class="rule"></div>
+    <div class="outcomes-row" role="list" aria-label="Attitude at every stage">
+      <div class="outcome-card" role="listitem">
+        <div class="outcome-att">Why</div>
+        <div class="outcome-stage">Attitude</div>
+        <div class="outcome-body">The foundation. Attitude is the condition of every stage — not a step, but the soil.</div>
       </div>
-      <div class="domain-cards-grid" id="domain-cards-grid"></div>
-    </div>
-
-    <!-- Patterns / cross-domain heuristics surface when 3+ dimensions are scored -->
-    <div class="overview-section" id="patterns-section" style="display:none">
-      <div class="overview-section-head">
-        <h3>What your wheel might be telling you <em>· reflective patterns, not a diagnosis</em></h3>
-        <div class="rule"></div>
+      <div class="outcome-card" role="listitem">
+        <div class="outcome-att">What</div>
+        <div class="outcome-stage">Focus</div>
+        <div class="outcome-body">What you focus on grows. Direct attention toward the process, not the outcome.</div>
       </div>
-      <p class="patterns-disclaimer">
-        These observations are reflective prompts based on how your self-ratings relate to each other — not a clinical or psychometric assessment. Your scores are your own subjective sense of each area on a given day, so read what follows as a question worth sitting with, not a verdict. The thresholds that trigger each pattern are shown so you can judge them yourself.
-      </p>
-      <div class="patterns-grid" id="patterns-grid"></div>
-    </div>
-  </section>
-
-  <!-- PANE 2: DIMENSION WIZARD -->
-  <section class="pane" id="pane-dimension">
-    <div class="wizard-head">
-      <div class="color-stripe" id="detail-stripe"></div>
-      <div class="meta">
-        <div class="breadcrumb">
-          <a id="back-to-wheel">← The Wheel</a>
-          <span class="sep">/</span>
-          <span id="bc-dim">—</span>
-          <span class="sep">/</span>
-          <span id="bc-step">Step 1</span>
-        </div>
-        <h2 id="detail-title">—<em id="detail-essence">—</em></h2>
+      <div class="outcome-card" role="listitem">
+        <div class="outcome-att">How</div>
+        <div class="outcome-stage">Control</div>
+        <div class="outcome-body">Own what you can. Release what you can't. Act from that clean, clear place.</div>
       </div>
-      <div class="wizard-head-aside">
-        <div class="save-pill" id="save-pill">Draft</div>
-        <button class="dim-reset-btn" id="dim-reset-btn" title="Clear all content in this dimension (reflections, score, declaration, and focused actions)">
-          ↺ Reset this dimension
-        </button>
+      <div class="outcome-card" role="listitem">
+        <div class="outcome-att">When</div>
+        <div class="outcome-stage">Speed to Adapt</div>
+        <div class="outcome-body">Shrink the gap between what happened and what you do next. Learn and move.</div>
+      </div>
+      <div class="outcome-card" role="listitem">
+        <div class="outcome-att">Who</div>
+        <div class="outcome-stage">Winning</div>
+        <div class="outcome-body">Facing the right direction. Hitting your benchmarks. On your terms — not anyone else's.</div>
       </div>
     </div>
 
-    <div class="wizard-progress" id="wizard-progress">
-      <div class="wp-step active" data-step="0"><div class="wp-num">01</div><div class="wp-name">Define</div></div>
-      <div class="wp-step" data-step="1"><div class="wp-num">02</div><div class="wp-name">Reflect</div></div>
-      <div class="wp-step" data-step="2"><div class="wp-num">03</div><div class="wp-name">Score</div></div>
-      <div class="wp-step" data-step="3"><div class="wp-num">04</div><div class="wp-name">I am…</div></div>
-      <div class="wp-step" data-step="4"><div class="wp-num">05</div><div class="wp-name">Act</div></div>
-    </div>
-
-    <div class="wizard-body" id="wizard-body"></div>
-
-    <div class="wizard-nav">
-      <div class="left">
-        <button id="step-back">← Back</button>
+    <div class="quotes-trio" role="list" aria-label="Voices on attitude">
+      <div class="qt-card" role="listitem">
+        <blockquote>"Freedom is about choice — about choosing compassion, humor, optimism, intuition, curiosity, and self-expression."</blockquote>
+        <cite>Edith Eger — The Choice</cite>
       </div>
-      <div class="save-state" id="save-state">Draft — not yet saved</div>
-      <div class="right">
-        <button id="step-skip">Skip dimension →</button>
-        <button class="primary" id="step-next">Next →</button>
+      <div class="qt-card" role="listitem">
+        <blockquote>"We can choose courage, or we can choose comfort, but we can't have both. Not at the same time."</blockquote>
+        <cite>Brené Brown</cite>
       </div>
-    </div>
-  </section>
-
-  <!-- PANE 3: VISION STATEMENT -->
-  <section class="pane" id="pane-vision">
-    <div class="section-label">
-      <span class="num">03</span>
-      <h3>Vision Statement <em>· your whole life, in one voice</em></h3>
-      <span class="rule"></span>
-    </div>
-    <p class="pane-intro">
-      Your overarching vision is the chorus of your dimension declarations. Each "I am…" you write becomes a verse. Read it aloud — let it sound like a person you are becoming.
-    </p>
-
-    <div class="vision-statement-card">
-      <div class="kicker">My Vision · The Whole Life</div>
-      <div id="vs-content"></div>
-      <div class="vs-footer">
-        <span>Compiled from your dimension declarations</span>
-        <span id="vs-count">0 / 10 voices</span>
+      <div class="qt-card" role="listitem">
+        <blockquote>"You are responsible for the energy you bring into this room."</blockquote>
+        <cite>Brené Brown — The Power of Vulnerability</cite>
       </div>
     </div>
 
-    <div class="vision-meta-grid" id="vision-meta-grid"></div>
-
-    <div class="vision-verses-block">
-      <div class="vv-head">
-        <h4>The verses <em>· one declaration per dimension</em></h4>
-        <span class="vv-progress" id="vv-progress">0 of 10 declared</span>
+    <div class="cta-block">
+      <p class="cta-label">Choose your tool</p>
+      <div class="cta-row">
+        <a href="tools/purpose-driven/" class="cta-btn" aria-label="Open the Purpose Driven Exercise">Purpose Driven Exercise</a>
+        <a href="tools/harbor-compass/" class="cta-btn wellness" aria-label="Open Harbor Compass wellness wheel">Harbor Compass · Wellness Wheel</a>
       </div>
-      <div class="vision-verses" id="vision-verses"></div>
+      <div class="stage-chips" aria-label="Framework stages">
+        <span class="chip chip-s1">Why</span>
+        <span class="chip chip-s2">What</span>
+        <span class="chip chip-s3">How</span>
+        <span class="chip chip-s4">When</span>
+        <span class="chip chip-s5">Who</span>
+      </div>
+      <p class="cta-hint">Purpose framework · Ten well-being dimensions · Budget alignment</p>
     </div>
 
-    <div class="vision-prompt-card" id="vision-prompt-card"></div>
-  </section>
+  </div>
+</section>
 
-  <!-- PANE 4: TIMELINE -->
-  <section class="pane" id="pane-actions">
-    <div class="section-label">
-      <span class="num">04</span>
-      <h3>Focused Actions <em>· sorted by what's next</em></h3>
-      <span class="rule"></span>
-    </div>
-    <p class="pane-intro">
-      Every "from X to Y, by when" you've written appears here. This is what your vision asks of you, in order.
-    </p>
+</main>
 
-    <div class="timeline-stats" id="timeline-stats"></div>
-
-    <div class="timeline">
-      <div class="timeline-head">
-        <h4>What needs your attention <em>· next 12 months</em></h4>
-        <div class="sort-toggle">
-          <button class="active" data-sort="date">By date</button>
-          <button data-sort="dimension">By dimension</button>
-          <button data-sort="urgency">By urgency</button>
-        </div>
-      </div>
-      <ul class="timeline-list" id="timeline-list"></ul>
-    </div>
-
-    <div class="timeline-coverage" id="timeline-coverage"></div>
-  </section>
-
-  <!-- PANE 5: FUND -->
-  <section class="pane" id="pane-fund">
-    <div class="section-label">
-      <span class="num">05</span>
-      <h3>Fund the Life <em>· money in service of your wheel</em></h3>
-      <span class="rule"></span>
-    </div>
-    <div class="fund-intro-card">
-      <div>
-        <h4>This budget reflects the life you are building.</h4>
-        <p class="vs-quote">"The 50/30/20 framework is your container — but what fills it is your wellness wheel. Adjust the percentages to fit the life you're designing."</p>
-      </div>
-      <div class="stats">
-        <div class="lbl">Vision-funded / mo</div>
-        <div class="val" id="fund-stat-vision">$0</div>
-        <div class="sub" id="fund-stat-sub">across 0 dimensions</div>
-      </div>
-    </div>
-    <section class="income-bar">
-      <span class="income-label">After-tax income</span>
-      <div class="income-input-wrap">
-        <span>$</span>
-        <input id="income-input" type="number" value="5000" min="0" step="100" />
-      </div>
-      <div class="income-cycle" id="cycle">
-        <button data-cycle="weekly">Weekly</button>
-        <button data-cycle="biweekly">Biweekly</button>
-        <button data-cycle="monthly" class="active">Monthly</button>
-        <button data-cycle="yearly">Yearly</button>
-      </div>
-    </section>
-
-    <div class="allocation-controls">
-      <div class="ac-head">
-        <h4>Your allocation <em>· adjust the framework</em></h4>
-        <button class="reset-btn" id="reset-pcts">Reset to 50 / 30 / 20</button>
-      </div>
-      <div class="slider-row">
-        <div class="slider-label"><span class="swatch" style="background:var(--bucket-needs)"></span>Needs</div>
-        <input type="range" id="slider-needs" min="0" max="100" value="50" step="1"/>
-        <span class="pct-display" id="pct-needs">50%</span>
-      </div>
-      <div class="slider-row">
-        <div class="slider-label"><span class="swatch" style="background:var(--bucket-wants)"></span>Wants</div>
-        <input type="range" id="slider-wants" min="0" max="100" value="30" step="1"/>
-        <span class="pct-display" id="pct-wants">30%</span>
-      </div>
-      <div class="slider-row">
-        <div class="slider-label"><span class="swatch" style="background:var(--bucket-savings)"></span>Savings</div>
-        <input type="range" id="slider-savings" min="0" max="100" value="20" step="1"/>
-        <span class="pct-display" id="pct-savings">20%</span>
-      </div>
-      <div class="slider-warning" id="slider-warning"></div>
-    </div>
-
-    <section class="overview" id="overview">
-      <div class="bucket" data-bucket="needs">
-        <div class="bucket-head"><div class="bucket-name"><span class="swatch"></span>Needs</div><div class="bucket-target">TARGET · <span class="target-pct">50</span>%</div></div>
-        <div class="bucket-figures"><div class="bucket-actual">$0</div><div class="bucket-of">of $<span class="bucket-cap">2,500</span></div></div>
-        <div class="bucket-bar"><div class="bucket-bar-fill" style="width:0%"></div><div class="bucket-bar-target" style="left:50%"></div></div>
-        <div class="bucket-pct"><span><span class="actual-pct">0%</span> actual</span><span class="diff">—</span></div>
-        <div class="bucket-status">Awaiting your first entry.</div>
-      </div>
-      <div class="bucket" data-bucket="wants">
-        <div class="bucket-head"><div class="bucket-name"><span class="swatch"></span>Wants</div><div class="bucket-target">TARGET · <span class="target-pct">30</span>%</div></div>
-        <div class="bucket-figures"><div class="bucket-actual">$0</div><div class="bucket-of">of $<span class="bucket-cap">1,500</span></div></div>
-        <div class="bucket-bar"><div class="bucket-bar-fill" style="width:0%"></div><div class="bucket-bar-target" style="left:30%"></div></div>
-        <div class="bucket-pct"><span><span class="actual-pct">0%</span> actual</span><span class="diff">—</span></div>
-        <div class="bucket-status">Room to enjoy.</div>
-      </div>
-      <div class="bucket" data-bucket="savings">
-        <div class="bucket-head"><div class="bucket-name"><span class="swatch"></span>Savings &amp; Debt</div><div class="bucket-target">TARGET · <span class="target-pct">20</span>%</div></div>
-        <div class="bucket-figures"><div class="bucket-actual">$0</div><div class="bucket-of">of $<span class="bucket-cap">1,000</span></div></div>
-        <div class="bucket-bar"><div class="bucket-bar-fill" style="width:0%"></div><div class="bucket-bar-target" style="left:20%"></div></div>
-        <div class="bucket-pct"><span><span class="actual-pct">0%</span> actual</span><span class="diff">—</span></div>
-        <div class="bucket-status">Build your future.</div>
-      </div>
-    </section>
-
-    <div class="budget-grid">
-      <div>
-        <div class="section-label">
-          <span class="num">05a</span>
-          <h3>Ledger <em>· vision-tagged &amp; everyday</em></h3>
-          <span class="rule"></span>
-        </div>
-        <div class="add-row">
-          <input id="exp-name" type="text" placeholder="Expense name (e.g. Rent)" />
-          <input id="exp-amount" type="number" placeholder="$ Amount" min="0" step="1"/>
-          <select id="exp-bucket">
-            <option value="needs">Needs</option>
-            <option value="wants">Wants</option>
-            <option value="savings">Savings &amp; Debt</option>
-          </select>
-          <button id="add-btn">Add</button>
-        </div>
-        <ul class="expense-list" id="expense-list"></ul>
-      </div>
-      <aside>
-        <div class="section-label">
-          <span class="num">05b</span>
-          <h3>Balance check</h3>
-          <span class="rule"></span>
-        </div>
-        <div class="vision-fund-panel" id="vision-fund-panel"></div>
-      </aside>
-    </div>
-  </section>
-
-  </main>
-
-  <footer class="footer-note">
-    <span>Harbor Compass · v0.7</span>
-    <span class="footer-save"><span class="save-dot"></span><span id="autosave-indicator">Saved to this browser</span> · <button id="reset-all-data" class="reset-link">reset all data</button></span>
-    <span>Harbor · 2026</span>
-  </footer>
-</div>
-
-<!-- Print-only report container — populated by buildPrintDocument(), shown only during print -->
-<section class="print-document" id="print-document" aria-hidden="true"></section>
-
-<script src="js/main.js" defer></script>
 </body>
 </html>
