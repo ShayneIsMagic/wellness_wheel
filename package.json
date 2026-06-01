@@ -1,0 +1,8 @@
+{
+  "name": "harbor-compass",
+  "private": true,
+  "description": "Harbor Compass — Stanford WELL wellness wheel",
+  "scripts": {
+    "dev": "npx --yes serve ."
+  }
+}
