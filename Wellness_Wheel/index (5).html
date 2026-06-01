@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E1419" media="(prefers-color-scheme: dark)">
+<title>Harbor — Compass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,300;9..144,0,400;9..144,0,500;9..144,0,600;9..144,1,300;9..144,1,400;9..144,1,500&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">
+      <div class="brand-mark">H</div>
+      <div class="brand-text">
+        <h1>Harbor <em>Compass</em></h1>
+        <div class="tag">Navigate Your Whole Life</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="header-btn primary" id="action-export-pdf" title="Generate a polished PDF report of your full work">
+        <span class="hb-icon" aria-hidden="true">⤓</span> Export PDF
+      </button>
+      <button class="header-btn" id="action-download-json" title="Download a JSON backup file to your computer">
+        <span class="hb-icon" aria-hidden="true">↓</span> Download backup
+      </button>
+      <button class="header-btn" id="action-import-json" title="Restore from a previously-downloaded JSON backup">
+        <span class="hb-icon" aria-hidden="true">↑</span> Restore backup
+      </button>
+      <input type="file" id="import-file-input" accept="application/json,.json" hidden />
+    </div>
+    <div class="header-meta">
+      <div>Domains adapted from · <strong>Stanford WELL for Life</strong></div>
+      <div id="date-line" class="date-line">—</div>
+    </div>
+  </header>
+
+  <nav class="tab-nav">
+    <button class="active" data-pane="overview"><span class="num">01</span>The Wheel</button>
+    <button data-pane="dimension"><span class="num">02</span>Dimension Work</button>
+    <button data-pane="vision"><span class="num">03</span>Vision Statement</button>
+    <button data-pane="actions"><span class="num">04</span>Focused Actions</button>
+    <button data-pane="fund"><span class="num">05</span>Fund the Life</button>
+  </nav>
+
+  <main>
+  <!-- PANE 1: OVERVIEW -->
+  <section class="pane active" id="pane-overview">
+    <div class="intro-grid">
+      <div>
+        <div class="kicker">Begin Here · The Whole Life</div>
+        <h2>Ten dimensions, <em>one life</em>.</h2>
+        <p>The Stanford WELL for Life Scale identifies ten domains that together make up well-being. This tool borrows those ten domains as a structure for reflection — it is not the validated scale itself, and the numbers you'll give are your own subjective sense of each area, not test scores. For each domain you'll be guided through five steps: understand what it means, reflect in writing, rate how it feels, declare who you're becoming, and commit to a focused action. Click any petal to begin.</p>
+      </div>
+      <div class="pull">
+        "Ten domains of well-being were identified: social connectedness, lifestyle and daily practices, physical health, stress and resilience, emotional and mental health, purpose and meaning, sense of self, financial security and satisfaction, spirituality and religiosity, and exploration and creativity."
+        <cite>— Chrisinger et al., Stanford WELL for Life Scale (2019)</cite>
+      </div>
+    </div>
+    <div class="wheel-overview">
+      <div class="wheel-stage">
+        <svg viewBox="-190 -180 380 360" id="wheel-svg"></svg>
+        <div class="wheel-center-card">
+          <div class="label">Well-being</div>
+          <div class="word">your<br/>whole life</div>
+          <div class="ring-legend">inner = now<br/>outer = vision</div>
+        </div>
+      </div>
+      <div>
+        <div class="progress-card">
+          <h4>Your progress on the wheel</h4>
+          <div class="sub">Each segment fills as you complete that dimension's wizard.</div>
+          <div class="progress-meter" id="progress-meter"></div>
+          <div class="progress-stats" id="progress-stats"></div>
+        </div>
+        <button class="next-cta" id="next-cta">
+          <span id="next-cta-label">Begin with Physical Health</span>
+          <span>→</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Dimension preview cards — populated by JS -->
+    <div class="overview-section">
+      <div class="overview-section-head">
+        <h3>Your ten dimensions <em>· click any to begin or refine</em></h3>
+        <div class="rule"></div>
+      </div>
+      <div class="domain-cards-grid" id="domain-cards-grid"></div>
+    </div>
+
+    <!-- Patterns / cross-domain heuristics surface when 3+ dimensions are scored -->
+    <div class="overview-section" id="patterns-section" style="display:none">
+      <div class="overview-section-head">
+        <h3>What your wheel might be telling you <em>· reflective patterns, not a diagnosis</em></h3>
+        <div class="rule"></div>
+      </div>
+      <p class="patterns-disclaimer">
+        These observations are reflective prompts based on how your self-ratings relate to each other — not a clinical or psychometric assessment. Your scores are your own subjective sense of each area on a given day, so read what follows as a question worth sitting with, not a verdict. The thresholds that trigger each pattern are shown so you can judge them yourself.
+      </p>
+      <div class="patterns-grid" id="patterns-grid"></div>
+    </div>
+  </section>
+
+  <!-- PANE 2: DIMENSION WIZARD -->
+  <section class="pane" id="pane-dimension">
+    <div class="wizard-head">
+      <div class="color-stripe" id="detail-stripe"></div>
+      <div class="meta">
+        <div class="breadcrumb">
+          <a id="back-to-wheel">← The Wheel</a>
+          <span class="sep">/</span>
+          <span id="bc-dim">—</span>
+          <span class="sep">/</span>
+          <span id="bc-step">Step 1</span>
+        </div>
+        <h2 id="detail-title">—<em id="detail-essence">—</em></h2>
+      </div>
+      <div class="wizard-head-aside">
+        <div class="save-pill" id="save-pill">Draft</div>
+        <button class="dim-reset-btn" id="dim-reset-btn" title="Clear all content in this dimension (reflections, score, declaration, and focused actions)">
+          ↺ Reset this dimension
+        </button>
+      </div>
+    </div>
+
+    <div class="wizard-progress" id="wizard-progress">
+      <div class="wp-step active" data-step="0"><div class="wp-num">01</div><div class="wp-name">Define</div></div>
+      <div class="wp-step" data-step="1"><div class="wp-num">02</div><div class="wp-name">Reflect</div></div>
+      <div class="wp-step" data-step="2"><div class="wp-num">03</div><div class="wp-name">Score</div></div>
+      <div class="wp-step" data-step="3"><div class="wp-num">04</div><div class="wp-name">I am…</div></div>
+      <div class="wp-step" data-step="4"><div class="wp-num">05</div><div class="wp-name">Act</div></div>
+    </div>
+
+    <div class="wizard-body" id="wizard-body"></div>
+
+    <div class="wizard-nav">
+      <div class="left">
+        <button id="step-back">← Back</button>
+      </div>
+      <div class="save-state" id="save-state">Draft — not yet saved</div>
+      <div class="right">
+        <button id="step-skip">Skip dimension →</button>
+        <button class="primary" id="step-next">Next →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PANE 3: VISION STATEMENT -->
+  <section class="pane" id="pane-vision">
+    <div class="section-label">
+      <span class="num">03</span>
+      <h3>Vision Statement <em>· your whole life, in one voice</em></h3>
+      <span class="rule"></span>
+    </div>
+    <p class="pane-intro">
+      Your overarching vision is the chorus of your dimension declarations. Each "I am…" you write becomes a verse. Read it aloud — let it sound like a person you are becoming.
+    </p>
+
+    <div class="vision-statement-card">
+      <div class="kicker">My Vision · The Whole Life</div>
+      <div id="vs-content"></div>
+      <div class="vs-footer">
+        <span>Compiled from your dimension declarations</span>
+        <span id="vs-count">0 / 10 voices</span>
+      </div>
+    </div>
+
+    <div class="vision-meta-grid" id="vision-meta-grid"></div>
+
+    <div class="vision-verses-block">
+      <div class="vv-head">
+        <h4>The verses <em>· one declaration per dimension</em></h4>
+        <span class="vv-progress" id="vv-progress">0 of 10 declared</span>
+      </div>
+      <div class="vision-verses" id="vision-verses"></div>
+    </div>
+
+    <div class="vision-prompt-card" id="vision-prompt-card"></div>
+  </section>
+
+  <!-- PANE 4: TIMELINE -->
+  <section class="pane" id="pane-actions">
+    <div class="section-label">
+      <span class="num">04</span>
+      <h3>Focused Actions <em>· sorted by what's next</em></h3>
+      <span class="rule"></span>
+    </div>
+    <p class="pane-intro">
+      Every "from X to Y, by when" you've written appears here. This is what your vision asks of you, in order.
+    </p>
+
+    <div class="timeline-stats" id="timeline-stats"></div>
+
+    <div class="timeline">
+      <div class="timeline-head">
+        <h4>What needs your attention <em>· next 12 months</em></h4>
+        <div class="sort-toggle">
+          <button class="active" data-sort="date">By date</button>
+          <button data-sort="dimension">By dimension</button>
+          <button data-sort="urgency">By urgency</button>
+        </div>
+      </div>
+      <ul class="timeline-list" id="timeline-list"></ul>
+    </div>
+
+    <div class="timeline-coverage" id="timeline-coverage"></div>
+  </section>
+
+  <!-- PANE 5: FUND -->
+  <section class="pane" id="pane-fund">
+    <div class="section-label">
+      <span class="num">05</span>
+      <h3>Fund the Life <em>· money in service of your wheel</em></h3>
+      <span class="rule"></span>
+    </div>
+    <div class="fund-intro-card">
+      <div>
+        <h4>This budget reflects the life you are building.</h4>
+        <p class="vs-quote">"The 50/30/20 framework is your container — but what fills it is your wellness wheel. Adjust the percentages to fit the life you're designing."</p>
+      </div>
+      <div class="stats">
+        <div class="lbl">Vision-funded / mo</div>
+        <div class="val" id="fund-stat-vision">$0</div>
+        <div class="sub" id="fund-stat-sub">across 0 dimensions</div>
+      </div>
+    </div>
+    <section class="income-bar">
+      <span class="income-label">After-tax income</span>
+      <div class="income-input-wrap">
+        <span>$</span>
+        <input id="income-input" type="number" value="5000" min="0" step="100" />
+      </div>
+      <div class="income-cycle" id="cycle">
+        <button data-cycle="weekly">Weekly</button>
+        <button data-cycle="biweekly">Biweekly</button>
+        <button data-cycle="monthly" class="active">Monthly</button>
+        <button data-cycle="yearly">Yearly</button>
+      </div>
+    </section>
+
+    <div class="allocation-controls">
+      <div class="ac-head">
+        <h4>Your allocation <em>· adjust the framework</em></h4>
+        <button class="reset-btn" id="reset-pcts">Reset to 50 / 30 / 20</button>
+      </div>
+      <div class="slider-row">
+        <div class="slider-label"><span class="swatch" style="background:var(--bucket-needs)"></span>Needs</div>
+        <input type="range" id="slider-needs" min="0" max="100" value="50" step="1"/>
+        <span class="pct-display" id="pct-needs">50%</span>
+      </div>
+      <div class="slider-row">
+        <div class="slider-label"><span class="swatch" style="background:var(--bucket-wants)"></span>Wants</div>
+        <input type="range" id="slider-wants" min="0" max="100" value="30" step="1"/>
+        <span class="pct-display" id="pct-wants">30%</span>
+      </div>
+      <div class="slider-row">
+        <div class="slider-label"><span class="swatch" style="background:var(--bucket-savings)"></span>Savings</div>
+        <input type="range" id="slider-savings" min="0" max="100" value="20" step="1"/>
+        <span class="pct-display" id="pct-savings">20%</span>
+      </div>
+      <div class="slider-warning" id="slider-warning"></div>
+    </div>
+
+    <section class="overview" id="overview">
+      <div class="bucket" data-bucket="needs">
+        <div class="bucket-head"><div class="bucket-name"><span class="swatch"></span>Needs</div><div class="bucket-target">TARGET · <span class="target-pct">50</span>%</div></div>
+        <div class="bucket-figures"><div class="bucket-actual">$0</div><div class="bucket-of">of $<span class="bucket-cap">2,500</span></div></div>
+        <div class="bucket-bar"><div class="bucket-bar-fill" style="width:0%"></div><div class="bucket-bar-target" style="left:50%"></div></div>
+        <div class="bucket-pct"><span><span class="actual-pct">0%</span> actual</span><span class="diff">—</span></div>
+        <div class="bucket-status">Awaiting your first entry.</div>
+      </div>
+      <div class="bucket" data-bucket="wants">
+        <div class="bucket-head"><div class="bucket-name"><span class="swatch"></span>Wants</div><div class="bucket-target">TARGET · <span class="target-pct">30</span>%</div></div>
+        <div class="bucket-figures"><div class="bucket-actual">$0</div><div class="bucket-of">of $<span class="bucket-cap">1,500</span></div></div>
+        <div class="bucket-bar"><div class="bucket-bar-fill" style="width:0%"></div><div class="bucket-bar-target" style="left:30%"></div></div>
+        <div class="bucket-pct"><span><span class="actual-pct">0%</span> actual</span><span class="diff">—</span></div>
+        <div class="bucket-status">Room to enjoy.</div>
+      </div>
+      <div class="bucket" data-bucket="savings">
+        <div class="bucket-head"><div class="bucket-name"><span class="swatch"></span>Savings &amp; Debt</div><div class="bucket-target">TARGET · <span class="target-pct">20</span>%</div></div>
+        <div class="bucket-figures"><div class="bucket-actual">$0</div><div class="bucket-of">of $<span class="bucket-cap">1,000</span></div></div>
+        <div class="bucket-bar"><div class="bucket-bar-fill" style="width:0%"></div><div class="bucket-bar-target" style="left:20%"></div></div>
+        <div class="bucket-pct"><span><span class="actual-pct">0%</span> actual</span><span class="diff">—</span></div>
+        <div class="bucket-status">Build your future.</div>
+      </div>
+    </section>
+
+    <div class="budget-grid">
+      <div>
+        <div class="section-label">
+          <span class="num">05a</span>
+          <h3>Ledger <em>· vision-tagged &amp; everyday</em></h3>
+          <span class="rule"></span>
+        </div>
+        <div class="add-row">
+          <input id="exp-name" type="text" placeholder="Expense name (e.g. Rent)" />
+          <input id="exp-amount" type="number" placeholder="$ Amount" min="0" step="1"/>
+          <select id="exp-bucket">
+            <option value="needs">Needs</option>
+            <option value="wants">Wants</option>
+            <option value="savings">Savings &amp; Debt</option>
+          </select>
+          <button id="add-btn">Add</button>
+        </div>
+        <ul class="expense-list" id="expense-list"></ul>
+      </div>
+      <aside>
+        <div class="section-label">
+          <span class="num">05b</span>
+          <h3>Balance check</h3>
+          <span class="rule"></span>
+        </div>
+        <div class="vision-fund-panel" id="vision-fund-panel"></div>
+      </aside>
+    </div>
+  </section>
+
+  </main>
+
+  <footer class="footer-note">
+    <span>Harbor Compass · v0.7</span>
+    <span class="footer-save"><span class="save-dot"></span><span id="autosave-indicator">Saved to this browser</span> · <button id="reset-all-data" class="reset-link">reset all data</button></span>
+    <span>Harbor · 2026</span>
+  </footer>
+</div>
+
+<!-- Print-only report container — populated by buildPrintDocument(), shown only during print -->
+<section class="print-document" id="print-document" aria-hidden="true"></section>
+
+<script src="script.js" defer></script>
+</body>
+</html>
