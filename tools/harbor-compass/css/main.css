@@ -475,8 +475,35 @@ header{display:flex;justify-content:space-between;align-items:flex-end;padding-b
 
 
 /* ─── Bucket cards ──────────────────────────────────── */
-.overview{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:40px}
+.overview{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:24px}
 @media (max-width:800px){.overview{grid-template-columns:1fr}}
+.budget-rollup{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:var(--line);border:1px solid var(--line);
+  margin-bottom:40px;
+}
+@media (max-width:800px){.budget-rollup{grid-template-columns:1fr}}
+.budget-rollup .rollup-cell{
+  background:var(--paper);padding:22px 26px;text-align:center;
+}
+.budget-rollup .rollup-highlight{background:var(--paper-2)}
+.budget-rollup .rollup-lbl{
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.22em;
+  text-transform:uppercase;color:var(--muted);display:block;margin-bottom:10px;
+}
+.budget-rollup .rollup-val{
+  font-family:'Fraunces',serif;font-size:32px;font-weight:500;line-height:1;
+  color:var(--ink);display:block;
+}
+.budget-rollup .rollup-highlight .rollup-val{font-size:36px}
+.budget-rollup .rollup-sub{
+  font-family:'Fraunces',serif;font-style:italic;font-size:12px;color:var(--muted);
+  display:block;margin-top:8px;
+}
+.budget-rollup .rollup-cell.is-over .rollup-val{color:var(--warn)}
+.budget-rollup .rollup-cell.is-good .rollup-val{color:var(--good)}
+.budget-rollup .rollup-highlight.is-over{background:rgba(198,40,40,0.08)}
+.budget-rollup .rollup-highlight.is-good{background:rgba(27,94,32,0.08)}
 .bucket{background:var(--paper);padding:24px 26px}
 .bucket-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
 .bucket-name{font-family:'Fraunces',serif;font-size:20px;font-weight:500}

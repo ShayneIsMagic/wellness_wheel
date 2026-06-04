@@ -1748,10 +1748,50 @@ function fmt(n) { return '$' + Math.round(n).toLocaleString(); }
 
 function renderBudget() {
   renderBudgetOverview();
+  renderBudgetRollup();
   renderExpenses();
   renderVisionFundPanel();
   updateFundIntro();
   syncSliders();
+}
+
+function renderBudgetRollup() {
+  const income = state.income || 0;
+  const totalExpenses = allExpenses().reduce((s, e) => s + e.amount, 0);
+  const leftover = income - totalExpenses;
+  const count = allExpenses().length;
+
+  const incomeEl = document.getElementById('rollup-income');
+  const expensesEl = document.getElementById('rollup-expenses');
+  const leftoverEl = document.getElementById('rollup-leftover');
+  const expensesSub = document.getElementById('rollup-expenses-sub');
+  const leftoverSub = document.getElementById('rollup-leftover-sub');
+  const highlight = document.querySelector('.budget-rollup .rollup-highlight');
+  if (!incomeEl) return;
+
+  incomeEl.textContent = income > 0 ? fmt(income) : '—';
+  expensesEl.textContent = fmt(totalExpenses);
+  expensesSub.textContent = count === 0
+    ? 'nothing in your ledger yet'
+    : count === 1 ? '1 line in your ledger' : `${count} lines in your ledger`;
+
+  highlight.classList.remove('is-over', 'is-good');
+  if (income === 0) {
+    leftoverEl.textContent = '—';
+    leftoverSub.textContent = 'Enter income above';
+  } else if (leftover < 0) {
+    leftoverEl.textContent = '-' + fmt(Math.abs(leftover));
+    leftoverSub.textContent = `Over budget by ${fmt(Math.abs(leftover))}`;
+    highlight.classList.add('is-over');
+  } else if (leftover === 0) {
+    leftoverEl.textContent = fmt(0);
+    leftoverSub.textContent = 'Income fully assigned';
+    highlight.classList.add('is-good');
+  } else {
+    leftoverEl.textContent = fmt(leftover);
+    leftoverSub.textContent = 'Unassigned this month';
+    highlight.classList.add('is-good');
+  }
 }
 
 function renderBudgetOverview() {
@@ -1935,6 +1975,7 @@ document.getElementById('reset-pcts').addEventListener('click', () => {
 document.getElementById('income-input').addEventListener('input', (e) => {
   state.income = Math.max(0, +e.target.value || 0);
   renderBudgetOverview();
+  renderBudgetRollup();
   persistState();
 });
 document.getElementById('cycle').addEventListener('click', (e) => {
